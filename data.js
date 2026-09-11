@@ -1,0 +1,164 @@
+// ============================================
+// 才哥自研学学习导航 - 网站数据文件
+// 编辑此文件即可添加/修改网站，无需改动代码
+// 格式：{ category, name, url, desc, icon, tags }
+//   category: 分类名称（需与下方 categories 一致）
+//   name: 网站名称
+//   url: 网站地址
+//   desc: 网站描述（一句话）
+//   icon: emoji 图标（可选，留空则自动生成首字母头像）
+//   tags: 标签数组，可选值："热门"、"新"、"推荐"
+// ============================================
+
+window.sitesData = [
+  // 🔥 热门推荐
+  { category: "热门推荐", icon: "🤖", name: "豆包", url: "https://www.doubao.com", desc: "字节跳动旗下AI助手，支持问答、写作、翻译、编程及图片视频生成", tags: ["热门"] },
+  { category: "热门推荐", icon: "📺", name: "哔哩哔哩", url: "https://www.bilibili.com", desc: "国内领先的视频弹幕网站，涵盖番剧、游戏、科技、学习等海量内容", tags: ["热门"] },
+  { category: "热门推荐", icon: "🔍", name: "百度", url: "https://www.baidu.com", desc: "全球最大的中文搜索引擎，查找信息的第一入口", tags: ["推荐"] },
+  { category: "热门推荐", icon: "🛒", name: "淘宝", url: "https://www.taobao.com", desc: "亚洲最大的网购零售平台，商品种类丰富，价格实惠", tags: ["热门"] },
+  { category: "热门推荐", icon: "💡", name: "知乎", url: "https://www.zhihu.com", desc: "中文互联网高质量问答社区，各行各业的人分享知识经验", tags: ["推荐"] },
+  { category: "热门推荐", icon: "📱", name: "抖音", url: "https://www.douyin.com", desc: "记录美好生活的短视频平台，内容丰富，算法推荐精准", tags: ["热门"] },
+  { category: "热门推荐", icon: "📰", name: "微博", url: "https://weibo.com", desc: "随时随地发现新鲜事，社交媒体平台，热点事件第一时间", tags: [] },
+  { category: "热门推荐", icon: "💬", name: "微信", url: "https://weixin.qq.com", desc: "腾讯旗下即时通讯工具，支持聊天、朋友圈、公众号、小程序", tags: ["推荐"] },
+
+  // 🤖 AI 工具
+  { category: "AI工具", icon: "🤖", name: "ChatGPT", url: "https://chatgpt.com", desc: "OpenAI推出的通用AI助手，支持问答、写作、推理、编程与多模态创作", tags: ["热门"] },
+  { category: "AI工具", icon: "🧠", name: "Claude", url: "https://claude.ai", desc: "Anthropic的AI助手，擅长长文分析、文档处理、编程与复杂任务协作", tags: ["热门"] },
+  { category: "AI工具", icon: "🐋", name: "DeepSeek", url: "https://chat.deepseek.com", desc: "深度求索推出的AI助手，擅长深度推理、代码、创作与文件阅读", tags: ["热门"] },
+  { category: "AI工具", icon: "🌙", name: "Kimi", url: "https://www.kimi.com", desc: "月之暗面推出的AI助手，面向长文本、知识工作、搜索与智能体任务", tags: ["热门"] },
+  { category: "AI工具", icon: "🔮", name: "通义千问", url: "https://tongyi.aliyun.com", desc: "阿里官方AI助手，支持AI搜索、网页总结、PPT、写作与图片生成", tags: [] },
+  { category: "AI工具", icon: "✍️", name: "文心一言", url: "https://yiyan.baidu.com", desc: "百度推出的知识增强型AI助手，提供搜索、创作、分析与多模态能力", tags: [] },
+  { category: "AI工具", icon: "🎤", name: "讯飞星火", url: "https://xinghuo.xfyun.cn", desc: "科大讯飞AI助手，覆盖问答、写作、办公、学习、编程与语音场景", tags: [] },
+  { category: "AI工具", icon: "✨", name: "Gemini", url: "https://gemini.google.com", desc: "Google的个人AI助理，可辅助写作、规划、头脑风暴与多模态理解", tags: [] },
+  { category: "AI工具", icon: "🎨", name: "即梦AI", url: "https://jimeng.jianying.com", desc: "字节跳动旗下一站式AI创作平台，支持中文提示词生成图片和视频", tags: ["新"] },
+  { category: "AI工具", icon: "🔎", name: "秘塔AI搜索", url: "https://metaso.cn", desc: "无广告AI搜索引擎，支持全网、学术与文库检索，提供引用溯源", tags: ["推荐"] },
+
+  // 🔍 搜索引擎
+  { category: "搜索引擎", icon: "🔍", name: "百度", url: "https://www.baidu.com", desc: "全球最大的中文搜索引擎，查找信息的第一入口", tags: ["推荐"] },
+  { category: "搜索引擎", icon: "🌐", name: "Google", url: "https://www.google.com", desc: "全球最大的搜索引擎，搜索结果全面，支持多语言", tags: ["热门"] },
+  { category: "搜索引擎", icon: "🅱️", name: "必应", url: "https://www.bing.com", desc: "微软旗下搜索引擎，集成AI搜索功能，图片搜索体验优秀", tags: [] },
+  { category: "搜索引擎", icon: "🐕", name: "搜狗", url: "https://www.sogou.com", desc: "搜狗搜索，支持微信公众号和知乎内容搜索", tags: [] },
+  { category: "搜索引擎", icon: "🦆", name: "DuckDuckGo", url: "https://duckduckgo.com", desc: "注重隐私的搜索引擎，不追踪用户，不存储个人数据", tags: ["新"] },
+  { category: "搜索引擎", icon: "🔎", name: "秘塔AI搜索", url: "https://metaso.cn", desc: "无广告AI搜索引擎，支持深度研究、事实核验和引用溯源", tags: ["推荐"] },
+  { category: "搜索引擎", icon: "📚", name: "知乎搜索", url: "https://www.zhihu.com/search", desc: "搜索知乎社区内的高质量问答和文章内容", tags: [] },
+  { category: "搜索引擎", icon: "🎯", name: "360搜索", url: "https://www.so.com", desc: "360旗下搜索引擎，安全防护，搜索结果精准", tags: [] },
+
+  // 📚 学习教育
+  { category: "学习教育", icon: "🎓", name: "中国大学MOOC", url: "https://www.icourse163.org", desc: "高教社与网易联合推出的中文慕课平台，提供国内高校课程", tags: ["热门"] },
+  { category: "学习教育", icon: "🏛️", name: "学堂在线", url: "https://www.xuetangx.com", desc: "清华大学发起的精品中文慕课平台，汇聚国内外高校课程", tags: ["推荐"] },
+  { category: "学习教育", icon: "📖", name: "网易公开课", url: "https://open.163.com", desc: "老牌中文开放学习平台，收录国内外大学公开课、TED、纪录片", tags: [] },
+  { category: "学习教育", icon: "📺", name: "B站学习区", url: "https://www.bilibili.com/v/knowledge", desc: "哔哩哔哩知识区，海量免费学习视频，从编程到外语应有尽有", tags: ["热门"] },
+  { category: "学习教育", icon: "💻", name: "慕课网", url: "https://www.imooc.com", desc: "面向程序员的在线学习平台，强调项目实践与职业技能", tags: [] },
+  { category: "学习教育", icon: "🌍", name: "Coursera", url: "https://www.coursera.org", desc: "全球知名在线学习平台，与大学和企业合作提供课程与证书", tags: [] },
+  { category: "学习教育", icon: "🎓", name: "edX", url: "https://www.edx.org", desc: "哈佛和MIT发起的在线教育平台，许多课程支持免费旁听", tags: [] },
+  { category: "学习教育", icon: "🧮", name: "可汗学院", url: "https://www.khanacademy.org", desc: "免费非营利学习平台，覆盖数学、科学、计算机等基础课程", tags: ["推荐"] },
+  { category: "学习教育", icon: "📄", name: "百度文库", url: "https://wenku.baidu.com", desc: "在线文档分享平台，涵盖教学资料、考试题库、专业资料", tags: [] },
+  { category: "学习教育", icon: "✏️", name: "知乎", url: "https://www.zhihu.com", desc: "高质量问答社区，各行各业的人分享知识经验和见解", tags: [] },
+
+  // 💻 编程开发
+  { category: "编程开发", icon: "🐙", name: "GitHub", url: "https://github.com", desc: "全球主流代码托管与协作平台，支持Git仓库、开源协作与项目管理", tags: ["热门"] },
+  { category: "编程开发", icon: "📋", name: "Stack Overflow", url: "https://stackoverflow.com", desc: "全球知名程序员问答社区，搜索编程错误和技术方案", tags: ["热门"] },
+  { category: "编程开发", icon: "📘", name: "MDN Web Docs", url: "https://developer.mozilla.org", desc: "Mozilla维护的开放Web技术文档，前端开发权威参考", tags: ["推荐"] },
+  { category: "编程开发", icon: "✏️", name: "CodePen", url: "https://codepen.io", desc: "前端代码在线编辑与展示社区，即时运行HTML/CSS/JS", tags: [] },
+  { category: "编程开发", icon: "☁️", name: "Replit", url: "https://replit.com", desc: "浏览器端云开发平台，支持多种编程语言在线运行和部署", tags: [] },
+  { category: "编程开发", icon: "⛏️", name: "掘金", url: "https://juejin.cn", desc: "国内技术社区，涵盖前端、后端、移动端、AI等技术文章", tags: ["热门"] },
+  { category: "编程开发", icon: "📝", name: "CSDN", url: "https://www.csdn.net", desc: "国内最大的IT技术社区，编程教程和问题解决方案丰富", tags: [] },
+  { category: "编程开发", icon: "📓", name: "博客园", url: "https://www.cnblogs.com", desc: "面向开发者的技术博客社区，文章质量较高，氛围纯粹", tags: [] },
+  { category: "编程开发", icon: "📦", name: "npm", url: "https://www.npmjs.com", desc: "Node.js包管理器，全球最大的开源软件注册表", tags: [] },
+  { category: "编程开发", icon: "🐍", name: "PyPI", url: "https://pypi.org", desc: "Python包索引，查找和安装Python第三方库", tags: [] },
+
+  // 🎬 影视娱乐
+  { category: "影视娱乐", icon: "📺", name: "哔哩哔哩", url: "https://www.bilibili.com", desc: "国内领先的视频弹幕网站，番剧、电影、纪录片、UP主原创", tags: ["热门"] },
+  { category: "影视娱乐", icon: "🎬", name: "爱奇艺", url: "https://www.iqiyi.com", desc: "国内主流视频平台，电视剧、电影、综艺、动漫内容丰富", tags: [] },
+  { category: "影视娱乐", icon: "🎥", name: "腾讯视频", url: "https://v.qq.com", desc: "腾讯旗下视频平台，热播剧综、电影、动漫、体育赛事", tags: [] },
+  { category: "影视娱乐", icon: "📹", name: "优酷", url: "https://www.youku.com", desc: "阿里巴巴旗下视频平台，剧集、电影、综艺、文化纪实", tags: [] },
+  { category: "影视娱乐", icon: "🥭", name: "芒果TV", url: "https://www.mgtv.com", desc: "湖南卫视旗下视频平台，综艺内容强势，独播剧丰富", tags: [] },
+  { category: "影视娱乐", icon: "🎵", name: "抖音", url: "https://www.douyin.com", desc: "短视频平台，内容丰富多样，算法推荐精准", tags: ["热门"] },
+  { category: "影视娱乐", icon: "⚡", name: "快手", url: "https://www.kuaishou.com", desc: "短视频与直播平台，记录真实生活，社区氛围浓厚", tags: [] },
+  { category: "影视娱乐", icon: "🍉", name: "西瓜视频", url: "https://www.ixigua.com", desc: "字节跳动旗下中视频平台，影视、知识、Vlog内容", tags: [] },
+
+  // 🎵 音乐音频
+  { category: "音乐音频", icon: "☁️", name: "网易云音乐", url: "https://music.163.com", desc: "国内最受欢迎的音乐平台之一，评论区文化独特，曲库丰富", tags: ["热门"] },
+  { category: "音乐音频", icon: "🎵", name: "QQ音乐", url: "https://y.qq.com", desc: "腾讯旗下音乐平台，版权曲库最全，支持无损音质", tags: ["热门"] },
+  { category: "音乐音频", icon: "🐶", name: "酷狗音乐", url: "https://www.kugou.com", desc: "老牌音乐播放器，曲库丰富，K歌功能强大", tags: [] },
+  { category: "音乐音频", icon: "🎧", name: "酷我音乐", url: "https://www.kuwo.cn", desc: "综合音乐平台，无损音质，有声读物和直播内容丰富", tags: [] },
+  { category: "音乐音频", icon: "📻", name: "咪咕音乐", url: "https://music.migu.cn", desc: "中国移动旗下音乐平台，周杰伦等歌手版权，免费无损", tags: ["推荐"] },
+  { category: "音乐音频", icon: "🎶", name: "Spotify", url: "https://www.spotify.com", desc: "全球最大的流媒体音乐平台，推荐算法精准，播客丰富", tags: [] },
+  { category: "音乐音频", icon: "🏔️", name: "喜马拉雅", url: "https://www.ximalaya.com", desc: "国内领先的音频分享平台，有声书、播客、课程内容丰富", tags: [] },
+  { category: "音乐音频", icon: "🌌", name: "小宇宙", url: "https://www.xiaoyuzhoufm.com", desc: "专注播客的音频App，界面简洁，播客内容优质", tags: ["新"] },
+
+  // 🖼️ 设计素材
+  { category: "设计素材", icon: "🎨", name: "站酷", url: "https://www.zcool.com.cn", desc: "国内领先的设计师互动平台，作品展示、设计教程、素材", tags: ["热门"] },
+  { category: "设计素材", icon: "🌸", name: "花瓣网", url: "https://huaban.com", desc: "图片素材收集与分享平台，设计灵感来源，画板收藏", tags: [] },
+  { category: "设计素材", icon: "🖼️", name: "千图网", url: "https://www.58pic.com", desc: "设计素材下载平台，PPT、海报、UI、矢量图等模板", tags: [] },
+  { category: "设计素材", icon: "📦", name: "包图网", url: "https://ibaotu.com", desc: "原创设计素材平台，视频模板、PPT模板、音效素材", tags: [] },
+  { category: "设计素材", icon: "📷", name: "摄图网", url: "https://699pic.com", desc: "正版摄影图片、视频、设计素材平台，可商用", tags: [] },
+  { category: "设计素材", icon: "🏔️", name: "Unsplash", url: "https://unsplash.com", desc: "全球知名免费高清图片库，所有图片可免费商用", tags: ["推荐"] },
+  { category: "设计素材", icon: "🎥", name: "Pexels", url: "https://www.pexels.com", desc: "免费图片和视频素材库，高质量，可商用无需署名", tags: ["推荐"] },
+  { category: "设计素材", icon: "🌈", name: "Pixabay", url: "https://pixabay.com", desc: "免费图片、视频、音乐、插画素材库，可商用", tags: [] },
+  { category: "设计素材", icon: "🎯", name: "Figma", url: "https://www.figma.com", desc: "在线协作设计工具，UI/UX设计首选，实时协作", tags: ["热门"] },
+  { category: "设计素材", icon: "⚡", name: "即时设计", url: "https://js.design", desc: "国产在线UI设计工具，兼容Figma，中文社区支持好", tags: ["新"] },
+
+  // 📝 办公效率
+  { category: "办公效率", icon: "📄", name: "腾讯文档", url: "https://docs.qq.com", desc: "腾讯旗下在线文档，支持多人实时协作，表格、幻灯片", tags: ["热门"] },
+  { category: "办公效率", icon: "🐦", name: "飞书", url: "https://www.feishu.cn", desc: "字节跳动旗下企业协作平台，文档、会议、任务一体化", tags: ["推荐"] },
+  { category: "办公效率", icon: "📌", name: "钉钉", url: "https://www.dingtalk.com", desc: "阿里巴巴旗下企业办公平台，考勤、审批、视频会议", tags: [] },
+  { category: "办公效率", icon: "✏️", name: "石墨文档", url: "https://shimo.im", desc: "简洁的在线协作文档，支持文档、表格、思维导图", tags: [] },
+  { category: "办公效率", icon: "📊", name: "WPS", url: "https://www.wps.cn", desc: "国产办公套件，文字、表格、演示、PDF，兼容Office", tags: ["推荐"] },
+  { category: "办公效率", icon: "☁️", name: "百度网盘", url: "https://pan.baidu.com", desc: "国内主流云存储服务，文件存储、分享、备份、在线预览", tags: [] },
+  { category: "办公效率", icon: "🚀", name: "阿里云盘", url: "https://www.aliyundrive.com", desc: "阿里云旗下网盘，下载不限速，空间大，体验流畅", tags: ["热门"] },
+  { category: "办公效率", icon: "⚡", name: "夸克网盘", url: "https://pan.quark.cn", desc: "夸克浏览器旗下网盘，下载快，资源分享便捷", tags: ["新"] },
+  { category: "办公效率", icon: "📝", name: "印象笔记", url: "https://www.yinxiang.com", desc: "老牌笔记应用，知识管理、网页剪藏、多端同步", tags: [] },
+  { category: "办公效率", icon: "🧩", name: "Notion", url: "https://www.notion.so", desc: "全能笔记与协作工具，文档、数据库、看板、Wiki", tags: ["热门"] },
+
+  // 🛒 购物消费
+  { category: "购物消费", icon: "🛒", name: "淘宝", url: "https://www.taobao.com", desc: "亚洲最大网购零售平台，商品种类丰富，价格实惠", tags: ["热门"] },
+  { category: "购物消费", icon: "📦", name: "京东", url: "https://www.jd.com", desc: "国内知名综合电商，自营物流快，正品保障，3C数码首选", tags: ["热门"] },
+  { category: "购物消费", icon: "🍎", name: "拼多多", url: "https://www.pinduoduo.com", desc: "社交电商平台，价格低廉，拼团模式，百亿补贴", tags: [] },
+  { category: "购物消费", icon: "🐱", name: "天猫", url: "https://www.tmall.com", desc: "淘宝旗下B2C平台，品牌旗舰店，品质保障", tags: [] },
+  { category: "购物消费", icon: "🏬", name: "苏宁易购", url: "https://www.suning.com", desc: "综合网上购物商城，家电3C优势，线下门店支持", tags: [] },
+  { category: "购物消费", icon: "💎", name: "唯品会", url: "https://www.vip.com", desc: "品牌特卖电商，折扣力度大，服饰美妆为主", tags: [] },
+  { category: "购物消费", icon: "📚", name: "当当", url: "https://www.dangdang.com", desc: "老牌网上书店，图书品类齐全，价格优惠", tags: [] },
+  { category: "购物消费", icon: "🌍", name: "亚马逊", url: "https://www.amazon.cn", desc: "全球最大电商平台，海外购、Kindle电子书", tags: [] },
+
+  // 📰 新闻资讯
+  { category: "新闻资讯", icon: "📰", name: "新浪新闻", url: "https://news.sina.com.cn", desc: "新浪旗下新闻门户，国内外大事、财经、体育、娱乐", tags: [] },
+  { category: "新闻资讯", icon: "📱", name: "腾讯新闻", url: "https://news.qq.com", desc: "腾讯旗下新闻平台，实时热点、深度报道、视频新闻", tags: [] },
+  { category: "新闻资讯", icon: "📝", name: "网易新闻", url: "https://news.163.com", desc: "网易旗下新闻门户，有态度的新闻，评论区活跃", tags: [] },
+  { category: "新闻资讯", icon: "🔍", name: "搜狐新闻", url: "https://news.sohu.com", desc: "搜狐旗下新闻平台，综合资讯，自媒体内容丰富", tags: [] },
+  { category: "新闻资讯", icon: "🔥", name: "凤凰网", url: "https://www.ifeng.com", desc: "凤凰卫视旗下新闻门户，国际视野，深度评论", tags: [] },
+  { category: "新闻资讯", icon: "🌊", name: "澎湃新闻", url: "https://www.thepaper.cn", desc: "上海报业集团旗下新闻平台，专注时政与思想，深度报道", tags: ["推荐"] },
+  { category: "新闻资讯", icon: "💡", name: "知乎热榜", url: "https://www.zhihu.com/hot", desc: "知乎热门话题，了解当下热议事件和多元观点", tags: ["热门"] },
+  { category: "新闻资讯", icon: "🚀", name: "36氪", url: "https://36kr.com", desc: "关注创业和科技的商业媒体，创投资讯、行业分析", tags: [] },
+
+  // 🛠️ 实用工具
+  { category: "实用工具", icon: "🌐", name: "百度翻译", url: "https://fanyi.baidu.com", desc: "免费在线翻译，支持多语种互译，文档翻译，AI翻译", tags: ["推荐"] },
+  { category: "实用工具", icon: "📖", name: "有道翻译", url: "https://fanyi.youdao.com", desc: "网易有道翻译，多语种互译，网页翻译，人工翻译", tags: [] },
+  { category: "实用工具", icon: "🗺️", name: "高德地图", url: "https://www.amap.com", desc: "国内领先的地图导航服务，路线规划，实时路况，公交查询", tags: ["热门"] },
+  { category: "实用工具", icon: "📍", name: "百度地图", url: "https://map.baidu.com", desc: "百度旗下地图服务，导航、周边搜索、街景、全景", tags: [] },
+  { category: "实用工具", icon: "🌤️", name: "中国天气网", url: "https://www.weather.com.cn", desc: "权威天气预报，实时天气，空气质量，生活指数", tags: [] },
+  { category: "实用工具", icon: "📦", name: "快递100", url: "https://www.kuaidi100.com", desc: "快递查询追踪，支持国内外主流快递，一键查件", tags: ["推荐"] },
+  { category: "实用工具", icon: "🚄", name: "12306", url: "https://www.12306.cn", desc: "中国铁路官方购票网站，火车票查询、预订、改签、退票", tags: ["热门"] },
+  { category: "实用工具", icon: "✈️", name: "携程", url: "https://www.ctrip.com", desc: "国内领先的在线旅游平台，机票、酒店、火车票、度假", tags: [] },
+  { category: "实用工具", icon: "🍜", name: "美团", url: "https://www.meituan.com", desc: "本地生活服务平台，外卖、到店、酒店、电影、团购", tags: ["热门"] },
+  { category: "实用工具", icon: "🍔", name: "饿了么", url: "https://www.ele.me", desc: "阿里旗下外卖平台，美食外卖、生鲜超市、医药配送", tags: [] },
+];
+
+// 分类配置（顺序、图标）
+window.categoriesConfig = [
+  { name: "全部", icon: "📋" },
+  { name: "热门推荐", icon: "🔥" },
+  { name: "AI工具", icon: "🤖" },
+  { name: "搜索引擎", icon: "🔍" },
+  { name: "学习教育", icon: "📚" },
+  { name: "编程开发", icon: "💻" },
+  { name: "影视娱乐", icon: "🎬" },
+  { name: "音乐音频", icon: "🎵" },
+  { name: "设计素材", icon: "🖼️" },
+  { name: "办公效率", icon: "📝" },
+  { name: "购物消费", icon: "🛒" },
+  { name: "新闻资讯", icon: "📰" },
+  { name: "实用工具", icon: "🛠️" },
+  { name: "最近访问", icon: "🕐" },
+  { name: "我的收藏", icon: "⭐" },
+];
