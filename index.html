@@ -154,6 +154,20 @@ button { font-family: inherit; }
 .hero-search {
   width: 100%; max-width: 600px; position: relative; margin-bottom: 24px;
 }
+.search-engine-tabs {
+  display: flex; gap: 6px; justify-content: center;
+  margin-bottom: 12px; flex-wrap: wrap;
+}
+.engine-tab {
+  padding: 5px 14px; border-radius: 20px; font-size: 12px;
+  cursor: pointer; transition: all 0.2s; color: var(--text-muted);
+  background: var(--bg-tertiary); border: 1px solid var(--border);
+  font-weight: 500;
+}
+.engine-tab:hover { color: var(--text); border-color: var(--accent); }
+.engine-tab.active {
+  background: var(--accent); color: #fff; border-color: var(--accent);
+}
 .hero-search input {
   width: 100%; padding: 16px 50px 16px 52px;
   background: var(--card); border: 2px solid var(--border); border-radius: 16px;
@@ -179,6 +193,85 @@ button { font-family: inherit; }
   border-color: var(--accent); color: var(--accent);
   background: var(--accent-bg); transform: translateY(-1px);
 }
+
+/* 最近更新 */
+.recent-update {
+  max-width: 1200px; margin: 0 auto 30px; padding: 0 20px;
+}
+.recent-update-header {
+  display: flex; align-items: baseline; gap: 12px; margin-bottom: 14px;
+}
+.recent-update-title { font-size: 18px; font-weight: 700; }
+.recent-update-sub { font-size: 12px; color: var(--text-muted); }
+.recent-update-scroll {
+  display: flex; gap: 12px; overflow-x: auto; padding-bottom: 8px;
+  scrollbar-width: thin;
+}
+.recent-update-scroll::-webkit-scrollbar { height: 4px; }
+.recent-update-scroll::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+.recent-item {
+  flex-shrink: 0; width: 200px; padding: 14px;
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 12px; cursor: pointer; transition: all 0.2s;
+  text-decoration: none;
+}
+.recent-item:hover {
+  border-color: var(--accent); transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+.recent-item-icon { font-size: 24px; margin-bottom: 8px; }
+.recent-item-name {
+  font-size: 14px; font-weight: 600; color: var(--text);
+  margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.recent-item-desc {
+  font-size: 11px; color: var(--text-muted); line-height: 1.4;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.recent-item-cat {
+  display: inline-block; margin-top: 8px; font-size: 10px;
+  padding: 2px 6px; background: var(--accent-bg); color: var(--accent);
+  border-radius: 4px;
+}
+
+/* ========== 欢迎弹窗 ========== */
+.welcome-overlay {
+  position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(8px);
+  z-index: 1000; display: flex; align-items: center; justify-content: center;
+  opacity: 0; visibility: hidden; transition: all 0.3s ease;
+}
+.welcome-overlay.show { opacity: 1; visibility: visible; }
+.welcome-modal {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 20px; padding: 36px 32px; max-width: 420px;
+  width: 90%; text-align: center; box-shadow: var(--shadow-lg);
+  transform: translateY(20px) scale(0.95); transition: all 0.3s ease;
+}
+.welcome-overlay.show .welcome-modal { transform: translateY(0) scale(1); }
+.welcome-icon { font-size: 48px; margin-bottom: 16px; }
+.welcome-title { font-size: 20px; font-weight: 700; margin-bottom: 12px; }
+.welcome-desc {
+  font-size: 13.5px; color: var(--text-secondary);
+  line-height: 1.7; margin-bottom: 20px;
+}
+.welcome-features {
+  display: flex; gap: 8px; justify-content: center;
+  flex-wrap: wrap; margin-bottom: 24px;
+}
+.welcome-feature {
+  display: flex; align-items: center; gap: 5px;
+  padding: 6px 12px; background: var(--bg-tertiary);
+  border-radius: 20px; font-size: 12px; color: var(--text-secondary);
+}
+.welcome-btn {
+  background: var(--accent-gradient); color: #fff;
+  border: none; padding: 12px 32px; border-radius: 12px;
+  font-size: 14px; font-weight: 600; cursor: pointer;
+  transition: all 0.2s; width: 100%;
+}
+.welcome-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 16px rgba(6, 182, 212, 0.4); }
 
 /* ========== 命令面板 ========== */
 .palette-overlay {
@@ -268,6 +361,9 @@ button { font-family: inherit; }
   box-shadow: 0 2px 8px rgba(6, 182, 212, 0.3);
 }
 .cat-tag .count { font-size: 11px; opacity: 0.7; }
+.cat-tag.dragging { opacity: 0.4; transform: scale(0.95); }
+.cat-tag[draggable="true"] { cursor: grab; }
+.cat-tag[draggable="true"]:active { cursor: grabbing; }
 
 /* ========== 三栏布局 ========== */
 .layout {
@@ -316,6 +412,8 @@ button { font-family: inherit; }
   align-items: center;
   gap: 6px;
 }
+.hot-title-clickable { cursor: pointer; transition: color 0.2s; }
+.hot-title-clickable:hover { color: var(--accent); }
 .hot-panel-refresh {
   background: none;
   border: none;
@@ -499,7 +597,14 @@ button { font-family: inherit; }
   display: none;
 }
 .section-health.show { display: inline-block; }
-.section-sort { margin-left: auto; display: flex; gap: 4px; }
+.section-sort { display: flex; gap: 4px; }
+.section-actions { margin-left: auto; display: flex; align-items: center; gap: 10px; }
+.section-more-btn {
+  padding: 4px 12px; font-size: 12px; background: none;
+  border: 1px solid var(--border); border-radius: 6px; color: var(--text-muted);
+  cursor: pointer; transition: all 0.2s;
+}
+.section-more-btn:hover { color: var(--accent); border-color: var(--accent); }
 .sort-btn {
   padding: 4px 10px; font-size: 12px; background: var(--card);
   border: 1px solid var(--border); border-radius: 6px; color: var(--text-muted);
@@ -514,7 +619,7 @@ button { font-family: inherit; }
 }
 .card {
   background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
-  padding: 16px; display: flex; align-items: flex-start; gap: 14px;
+  padding: 16px 18px; display: flex; align-items: center; gap: 14px;
   cursor: pointer; transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative; overflow: hidden;
 }
@@ -525,7 +630,7 @@ button { font-family: inherit; }
 }
 .card:hover {
   background: var(--card-hover); border-color: var(--accent);
-  transform: translateY(-3px); box-shadow: var(--shadow-lg);
+  transform: translateY(-2px); box-shadow: var(--shadow-lg);
 }
 .card:hover::before { transform: scaleY(1); }
 .card:active { transform: translateY(-1px) scale(0.99); }
@@ -534,28 +639,37 @@ button { font-family: inherit; }
 .card.dead:hover { border-color: var(--text-muted); }
 
 .card-avatar {
-  width: 46px; height: 46px; border-radius: 12px;
+  width: 44px; height: 44px; border-radius: 50%;
   display: flex; align-items: center; justify-content: center;
-  font-size: 20px; flex-shrink: 0; color: #fff; font-weight: 700;
+  font-size: 18px; flex-shrink: 0; color: #fff; font-weight: 700;
   position: relative; overflow: hidden;
 }
-.card-avatar .emoji { font-size: 22px; }
+.card-avatar .emoji { font-size: 20px; }
 .card-body { flex: 1; min-width: 0; }
 .card-name {
-  font-size: 15px; font-weight: 700; margin-bottom: 5px;
+  font-size: 14.5px; font-weight: 700; margin-bottom: 4px;
   display: flex; align-items: center; gap: 6px; flex-wrap: wrap;
 }
 .card-name mark { background: var(--accent-bg); color: var(--accent); padding: 0 2px; border-radius: 3px; }
 .card-desc {
-  font-size: 12.5px; color: var(--text-secondary); line-height: 1.5;
+  font-size: 12px; color: var(--text-secondary); line-height: 1.5;
   display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
 }
 .card-desc mark { background: var(--accent-bg); color: var(--accent); padding: 0 2px; border-radius: 3px; }
-.card-tags { display: flex; gap: 4px; margin-top: 7px; flex-wrap: wrap; }
+.card-index {
+  position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
+  font-size: 22px; font-weight: 800; color: var(--border);
+  font-family: 'Courier New', monospace; letter-spacing: -1px;
+  transition: color 0.25s;
+}
+.card:hover .card-index { color: var(--accent); opacity: 0.4; }
+.card-tags { display: flex; gap: 4px; margin-top: 6px; flex-wrap: wrap; }
 .tag { font-size: 10px; padding: 2px 7px; border-radius: 5px; font-weight: 600; letter-spacing: 0.3px; }
 .tag-hot { background: rgba(244, 63, 94, 0.15); color: var(--tag-hot); }
 .tag-new { background: rgba(16, 185, 129, 0.15); color: var(--tag-new); }
 .tag-rec { background: rgba(245, 158, 11, 0.15); color: var(--tag-rec); }
+.tag-free { background: rgba(59, 130, 246, 0.15); color: #3b82f6; }
+.tag-foreign { background: rgba(139, 92, 246, 0.15); color: #8b5cf6; }
 .tag-dead { background: var(--bg-secondary); color: var(--text-muted); }
 
 .fav-btn {
@@ -632,6 +746,17 @@ button { font-family: inherit; }
 .footer-stat { display: flex; flex-direction: column; align-items: center; gap: 2px; }
 .footer-stat .num { font-size: 20px; font-weight: 700; color: var(--text-secondary); }
 .footer-stat .label { font-size: 12px; }
+.friend-links {
+  display: flex; justify-content: center; align-items: center;
+  gap: 10px; margin-bottom: 16px; flex-wrap: wrap;
+  font-size: 12px;
+}
+.friend-links-title { color: var(--text-muted); }
+.friend-links a {
+  color: var(--text-secondary); text-decoration: none;
+  transition: color 0.2s;
+}
+.friend-links a:hover { color: var(--accent); }
 .footer-actions { display: flex; justify-content: center; gap: 12px; margin-bottom: 16px; flex-wrap: wrap; }
 .footer-btn {
   padding: 6px 14px; background: var(--card); border: 1px solid var(--border);
@@ -975,58 +1100,208 @@ button:focus-visible, a:focus-visible, input:focus-visible {
   background: var(--accent-bg); padding: 2px 8px;
   border-radius: 8px; font-weight: 600;
 }
-.study-overview {
-  display: flex; align-items: center; gap: 14px;
-  padding: 12px 14px;
-}
-.study-progress-ring {
-  position: relative; width: 80px; height: 80px;
-  flex-shrink: 0;
-}
-.study-progress-ring circle { transition: stroke-dashoffset 0.6s ease; }
-.study-progress-text {
-  position: absolute; top: 50%; left: 50%;
-  transform: translate(-50%, -50%);
-  font-size: 16px; font-weight: 700; color: var(--text);
-}
-.study-stats { flex: 1; display: flex; flex-direction: column; gap: 8px; }
-.study-stat { display: flex; justify-content: space-between; align-items: center; }
-.study-stat-val { font-size: 15px; font-weight: 700; color: var(--text); }
-.study-stat-label { font-size: 11px; color: var(--text-muted); }
-.study-phases { padding: 4px 10px 10px; }
-.study-phase {
+.task-progress-wrap {
   display: flex; align-items: center; gap: 10px;
-  padding: 7px 8px; border-radius: 8px;
-  cursor: pointer; transition: background 0.15s;
+  padding: 10px 14px;
 }
-.study-phase:hover { background: var(--accent-bg); }
-.phase-check {
-  width: 20px; height: 20px; border-radius: 6px;
-  border: 2px solid var(--text-muted);
+.task-progress-bar {
+  flex: 1; height: 8px; background: var(--bg-secondary);
+  border-radius: 4px; overflow: hidden;
+}
+.task-progress-fill {
+  height: 100%; width: 0%;
+  background: var(--accent-gradient);
+  border-radius: 4px; transition: width 0.4s ease;
+}
+.task-progress-text {
+  font-size: 13px; font-weight: 700; color: var(--accent);
+  min-width: 36px; text-align: right;
+}
+.task-input-wrap {
+  display: flex; gap: 8px; padding: 0 12px 10px;
+}
+.task-input-wrap input {
+  flex: 1; padding: 8px 12px; font-size: 12px;
+  background: var(--bg-secondary); border: 1px solid var(--border);
+  border-radius: 8px; color: var(--text); outline: none;
+  transition: border-color 0.2s;
+}
+.task-input-wrap input:focus { border-color: var(--accent); }
+.task-input-wrap button {
+  width: 32px; height: 32px; border: none; border-radius: 8px;
+  background: var(--accent); color: #fff; font-size: 18px;
+  cursor: pointer; transition: all 0.2s;
   display: flex; align-items: center; justify-content: center;
-  flex-shrink: 0; transition: all 0.2s;
-  font-size: 12px; color: #fff;
 }
-.study-phase.done .phase-check {
+.task-input-wrap button:hover { background: var(--accent-hover); transform: scale(1.05); }
+.task-list {
+  padding: 0 10px 12px; max-height: 280px;
+  overflow-y: auto;
+}
+.task-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 10px; border-radius: 8px;
+  transition: background 0.15s; margin-bottom: 4px;
+}
+.task-item:hover { background: var(--accent-bg); }
+.task-checkbox {
+  width: 18px; height: 18px; border-radius: 5px;
+  border: 2px solid var(--text-muted); cursor: pointer;
+  flex-shrink: 0; display: flex; align-items: center;
+  justify-content: center; transition: all 0.2s;
+  font-size: 11px; color: #fff;
+}
+.task-item.done .task-checkbox {
   background: var(--accent); border-color: var(--accent);
 }
-.study-phase.done .phase-check::after { content: "✓"; }
-.phase-info { flex: 1; min-width: 0; }
-.phase-name {
-  display: block; font-size: 12px; font-weight: 600;
-  color: var(--text); white-space: nowrap;
-  overflow: hidden; text-overflow: ellipsis;
+.task-item.done .task-checkbox::after { content: "✓"; }
+.task-text {
+  flex: 1; font-size: 12.5px; color: var(--text);
+  cursor: pointer; word-break: break-all;
 }
-.study-phase.done .phase-name {
+.task-item.done .task-text {
   color: var(--text-muted); text-decoration: line-through;
 }
-.phase-meta { display: block; font-size: 10px; color: var(--text-muted); }
-.study-tip {
-  margin: 0 12px 12px; padding: 8px 10px;
-  background: var(--accent-bg); border-radius: 8px;
-  font-size: 11px; color: var(--text-secondary);
-  line-height: 1.5;
+.task-del {
+  opacity: 0; background: none; border: none;
+  color: var(--text-muted); cursor: pointer;
+  font-size: 14px; padding: 2px 6px; border-radius: 4px;
+  transition: all 0.2s;
 }
+.task-item:hover .task-del { opacity: 0.6; }
+.task-del:hover { opacity: 1 !important; color: var(--danger); background: var(--danger-bg); }
+.task-empty {
+  text-align: center; padding: 20px 10px;
+  font-size: 12px; color: var(--text-muted);
+}
+
+/* 每日食谱 */
+.recipe-panel { background: linear-gradient(135deg, var(--card), #f0f7ff); }
+.dark .recipe-panel { background: linear-gradient(135deg, var(--card), #1a2332); }
+.recipe-day-tabs { display: flex; gap: 4px; }
+.recipe-day-tab {
+  padding: 3px 10px; font-size: 11px; background: var(--bg-secondary);
+  border: 1px solid transparent; border-radius: 10px;
+  color: var(--text-muted); cursor: pointer; transition: all 0.2s;
+}
+.recipe-day-tab.active {
+  background: var(--accent-bg); color: var(--accent);
+  border-color: var(--accent);
+}
+.recipe-list { padding: 4px 10px 12px; display: flex; flex-direction: column; gap: 8px; }
+.recipe-card {
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px; background: var(--bg-secondary);
+  border-radius: 10px; cursor: pointer; transition: all 0.2s;
+}
+.recipe-card:hover { background: var(--accent-bg); transform: translateX(2px); }
+.recipe-img {
+  width: 52px; height: 52px; border-radius: 10px;
+  object-fit: cover; flex-shrink: 0;
+  background: linear-gradient(135deg, #f0f0f0, #e0e0e0);
+}
+.recipe-info { flex: 1; min-width: 0; }
+.recipe-meal { font-size: 10px; color: var(--text-muted); margin-bottom: 2px; }
+.recipe-name {
+  font-size: 13px; font-weight: 600; color: var(--text);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.recipe-meta { font-size: 10px; color: var(--text-muted); margin-top: 2px; }
+.recipe-arrow { color: var(--text-muted); font-size: 14px; flex-shrink: 0; }
+
+/* 食谱详情弹窗 */
+.recipe-modal-overlay {
+  position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.5); z-index: 10001;
+  display: flex; align-items: center; justify-content: center;
+  backdrop-filter: blur(4px);
+}
+.recipe-modal {
+  background: var(--card); border-radius: 16px;
+  width: 90%; max-width: 520px; max-height: 85vh;
+  display: flex; flex-direction: column;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+  animation: recipeModalIn 0.3s ease;
+}
+@keyframes recipeModalIn {
+  from { opacity: 0; transform: translateY(20px) scale(0.95); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+.recipe-modal-header {
+  display: flex; align-items: center; gap: 14px;
+  padding: 20px 24px; border-bottom: 1px solid var(--border);
+}
+.recipe-modal-img {
+  width: 64px; height: 64px; border-radius: 14px;
+  object-fit: cover; flex-shrink: 0;
+  background: linear-gradient(135deg, #f0f0f0, #e0e0e0);
+}
+.recipe-modal-title { flex: 1; }
+.recipe-modal-name { font-size: 20px; font-weight: 700; margin-bottom: 4px; }
+.recipe-modal-meta { font-size: 12px; color: var(--text-muted); }
+.recipe-modal-close {
+  background: none; border: none; font-size: 20px;
+  color: var(--text-muted); cursor: pointer; padding: 6px 10px;
+  border-radius: 8px; transition: all 0.2s;
+}
+.recipe-modal-close:hover { background: var(--bg-secondary); color: var(--text); }
+.recipe-modal-body { flex: 1; overflow-y: auto; padding: 16px 24px; }
+.recipe-section-title {
+  font-size: 14px; font-weight: 700; margin: 16px 0 10px;
+  display: flex; align-items: center; gap: 6px;
+}
+.recipe-section-title:first-child { margin-top: 0; }
+.recipe-ingredients {
+  display: flex; flex-wrap: wrap; gap: 6px;
+}
+.recipe-ingredient {
+  padding: 5px 12px; background: var(--bg-secondary);
+  border-radius: 14px; font-size: 12px; color: var(--text-secondary);
+}
+.recipe-steps { list-style: none; padding: 0; margin: 0; }
+.recipe-step {
+  display: flex; gap: 12px; padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+}
+.recipe-step:last-child { border-bottom: none; }
+.recipe-step-num {
+  width: 24px; height: 24px; border-radius: 50%;
+  background: var(--accent); color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 700; flex-shrink: 0;
+}
+.recipe-step-text { font-size: 13px; line-height: 1.6; color: var(--text-secondary); }
+
+/* 历史上的今天 */
+.history-list { padding: 4px 12px 12px; max-height: 200px; overflow-y: auto; }
+.history-item {
+  padding: 8px 0; border-bottom: 1px solid var(--border);
+  font-size: 12px; line-height: 1.5;
+}
+.history-item:last-child { border-bottom: none; }
+.history-year {
+  display: inline-block; font-weight: 700; color: var(--accent);
+  background: var(--accent-bg); padding: 1px 6px;
+  border-radius: 4px; margin-right: 6px; font-size: 11px;
+}
+.history-text { color: var(--text-secondary); }
+
+/* 实用工具网格 */
+.tool-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 8px; padding: 4px 12px 12px;
+}
+.tool-item {
+  display: flex; align-items: center; gap: 6px;
+  padding: 8px 10px; background: var(--bg-secondary);
+  border-radius: 8px; font-size: 12px; color: var(--text-secondary);
+  text-decoration: none; transition: all 0.2s;
+}
+.tool-item:hover {
+  background: var(--accent-bg); color: var(--accent);
+  transform: translateY(-1px);
+}
+.tool-item span { font-size: 14px; }
 
 /* ========== 左侧竖直导航 ========== */
 .vertical-nav {
@@ -1229,54 +1504,7 @@ body.has-vnav .layout { padding-left: 92px; }
     <span class="vnav-label">全部</span>
   </div>
   <div class="vnav-divider"></div>
-  <div class="vnav-item" data-target="热门推荐" title="热门推荐">
-    <span class="vnav-icon">🔥</span>
-    <span class="vnav-label">热门</span>
-  </div>
-  <div class="vnav-item" data-target="AI工具" title="AI工具">
-    <span class="vnav-icon">🤖</span>
-    <span class="vnav-label">AI</span>
-  </div>
-  <div class="vnav-item" data-target="搜索引擎" title="搜索引擎">
-    <span class="vnav-icon">🔍</span>
-    <span class="vnav-label">搜索</span>
-  </div>
-  <div class="vnav-item" data-target="学习教育" title="学习教育">
-    <span class="vnav-icon">📚</span>
-    <span class="vnav-label">学习</span>
-  </div>
-  <div class="vnav-item" data-target="编程开发" title="编程开发">
-    <span class="vnav-icon">💻</span>
-    <span class="vnav-label">编程</span>
-  </div>
-  <div class="vnav-item" data-target="影视娱乐" title="影视娱乐">
-    <span class="vnav-icon">🎬</span>
-    <span class="vnav-label">影视</span>
-  </div>
-  <div class="vnav-item" data-target="音乐音频" title="音乐音频">
-    <span class="vnav-icon">🎵</span>
-    <span class="vnav-label">音乐</span>
-  </div>
-  <div class="vnav-item" data-target="设计素材" title="设计素材">
-    <span class="vnav-icon">🎨</span>
-    <span class="vnav-label">设计</span>
-  </div>
-  <div class="vnav-item" data-target="办公效率" title="办公效率">
-    <span class="vnav-icon">📝</span>
-    <span class="vnav-label">办公</span>
-  </div>
-  <div class="vnav-item" data-target="购物消费" title="购物消费">
-    <span class="vnav-icon">🛒</span>
-    <span class="vnav-label">购物</span>
-  </div>
-  <div class="vnav-item" data-target="新闻资讯" title="新闻资讯">
-    <span class="vnav-icon">📰</span>
-    <span class="vnav-label">新闻</span>
-  </div>
-  <div class="vnav-item" data-target="实用工具" title="实用工具">
-    <span class="vnav-icon">🛠️</span>
-    <span class="vnav-label">工具</span>
-  </div>
+  <div id="vnavCategories"></div>
   <div class="vnav-divider"></div>
   <div class="vnav-item" data-target="recent" title="最近访问">
     <span class="vnav-icon">🕐</span>
@@ -1311,8 +1539,15 @@ body.has-vnav .layout { padding-left: 92px; }
 <section class="hero">
   <div class="hero-logo">🧭</div>
   <h1 class="hero-title">才哥自研学学习导航</h1>
-  <p class="hero-subtitle">精选 100+ 优质网站，一站式到达你想去的任何地方</p>
+  <p class="hero-subtitle">精选 140+ 优质网站，一站式到达你想去的任何地方</p>
   <div class="hero-search" id="heroSearchBox">
+    <div class="search-engine-tabs" id="searchEngineTabs">
+      <span class="engine-tab active" data-engine="site">站内</span>
+      <span class="engine-tab" data-engine="baidu">百度</span>
+      <span class="engine-tab" data-engine="bing">必应</span>
+      <span class="engine-tab" data-engine="zhihu">知乎</span>
+      <span class="engine-tab" data-engine="sogou">搜狗</span>
+    </div>
     <span class="si">🔍</span>
     <input type="text" id="heroSearch" placeholder="搜索网站名称或描述，或按 Ctrl+K 打开命令面板..." readonly>
     <span class="kbd-hint">Ctrl + K</span>
@@ -1320,6 +1555,31 @@ body.has-vnav .layout { padding-left: 92px; }
   <div class="hero-quick" id="heroQuick"></div>
   <div class="workflow-bar" id="workflowBar"></div>
 </section>
+
+<!-- 最近更新 -->
+<section class="recent-update" id="recentUpdate">
+  <div class="recent-update-header">
+    <span class="recent-update-title">🆕 最近更新</span>
+    <span class="recent-update-sub">新增网站，抢先体验</span>
+  </div>
+  <div class="recent-update-scroll" id="recentUpdateScroll"></div>
+</section>
+
+<!-- 欢迎弹窗 -->
+<div class="welcome-overlay" id="welcomeOverlay">
+  <div class="welcome-modal">
+    <div class="welcome-icon">🧭</div>
+    <h2 class="welcome-title">欢迎来到才哥自研学学习导航！</h2>
+    <p class="welcome-desc">精选 100+ 优质网站，一站式到达你想去的任何地方。支持热点资讯、股票监控、学习进度追踪等功能。</p>
+    <div class="welcome-features">
+      <div class="welcome-feature"><span>🔥</span>实时热点</div>
+      <div class="welcome-feature"><span>📈</span>股票监控</div>
+      <div class="welcome-feature"><span>🎓</span>学习进度</div>
+      <div class="welcome-feature"><span>⚡</span>一键工作流</div>
+    </div>
+    <button class="welcome-btn" id="welcomeClose">我知道了</button>
+  </div>
+</div>
 
 <!-- 命令面板 -->
 <div class="palette-overlay" id="paletteOverlay">
@@ -1349,31 +1609,41 @@ body.has-vnav .layout { padding-left: 92px; }
   <aside class="sidebar" id="sidebarLeft">
     <div class="hot-panel">
       <div class="hot-panel-header">
-        <span class="hot-panel-title">🔥 微博热搜</span>
-        <button class="hot-panel-refresh" data-source="weibo" title="刷新">🔄</button>
+        <span class="hot-panel-title hot-title-clickable" data-source="wallstreetcn" title="查看完整榜单">💰 财经速递</span>
+        <button class="hot-panel-refresh" data-source="wallstreetcn" title="刷新">🔄</button>
       </div>
-      <div class="hot-list" id="hotListWeibo"><div class="hot-loading">加载中...</div></div>
+      <div class="hot-list" id="hotListWallstreetcn"><div class="hot-loading">加载中...</div></div>
     </div>
     <div class="hot-panel">
       <div class="hot-panel-header">
-        <span class="hot-panel-title">🎵 抖音热点</span>
+        <span class="hot-panel-title hot-title-clickable" data-source="bili" title="查看完整榜单">🌐 时政热点</span>
+        <button class="hot-panel-refresh" data-source="bili" title="刷新">🔄</button>
+      </div>
+      <div class="hot-list" id="hotListBili"><div class="hot-loading">加载中...</div></div>
+    </div>
+    <div class="hot-panel">
+      <div class="hot-panel-header">
+        <span class="hot-panel-title hot-title-clickable" data-source="douyin" title="查看完整榜单">🏛️ 政策要闻</span>
         <button class="hot-panel-refresh" data-source="douyin" title="刷新">🔄</button>
       </div>
       <div class="hot-list" id="hotListDouyin"><div class="hot-loading">加载中...</div></div>
     </div>
     <div class="hot-panel">
       <div class="hot-panel-header">
-        <span class="hot-panel-title">🔍 百度热搜</span>
-        <button class="hot-panel-refresh" data-source="baidu" title="刷新">🔄</button>
+        <span class="hot-panel-title hot-title-clickable" data-source="kr36" title="查看完整榜单">🔬 科技前沿</span>
+        <button class="hot-panel-refresh" data-source="kr36" title="刷新">🔄</button>
       </div>
-      <div class="hot-list" id="hotListBaidu"><div class="hot-loading">加载中...</div></div>
+      <div class="hot-list" id="hotListKr36"><div class="hot-loading">加载中...</div></div>
     </div>
     <div class="hot-panel">
       <div class="hot-panel-header">
-        <span class="hot-panel-title">📺 B站热门</span>
-        <button class="hot-panel-refresh" data-source="bili" title="刷新">🔄</button>
+        <span class="hot-panel-title">📅 历史上的今天</span>
+        <div style="display:flex;align-items:center;gap:6px;">
+          <span class="study-countdown" id="todayDate"></span>
+          <button class="hot-panel-refresh" id="historyRefresh" title="换一批">🔄</button>
+        </div>
       </div>
-      <div class="hot-list" id="hotListBili"><div class="hot-loading">加载中...</div></div>
+      <div class="history-list" id="historyList"></div>
     </div>
   </aside>
 
@@ -1382,82 +1652,40 @@ body.has-vnav .layout { padding-left: 92px; }
 
   <!-- 右侧边栏：高价值信息 -->
   <aside class="sidebar" id="sidebarRight">
-    <!-- 学习进度面板 -->
+    <!-- 自定义学习任务面板 -->
     <div class="hot-panel study-panel">
       <div class="hot-panel-header">
-        <span class="hot-panel-title">🎓 网工学习进度</span>
-        <span class="study-countdown" id="studyCountdown"></span>
+        <span class="hot-panel-title">📝 学习任务</span>
+        <span class="study-countdown" id="taskCount">0/0</span>
       </div>
-      <div class="study-overview">
-        <div class="study-progress-ring">
-          <svg width="80" height="80" viewBox="0 0 80 80">
-            <circle cx="40" cy="40" r="34" fill="none" stroke="var(--border)" stroke-width="6"/>
-            <circle cx="40" cy="40" r="34" fill="none" stroke="var(--accent)" stroke-width="6"
-              stroke-dasharray="213.6" stroke-dashoffset="213.6" stroke-linecap="round"
-              transform="rotate(-90 40 40)" id="studyProgressRing"/>
-          </svg>
-          <div class="study-progress-text" id="studyProgressText">0%</div>
+      <div class="task-progress-wrap">
+        <div class="task-progress-bar">
+          <div class="task-progress-fill" id="taskProgressFill"></div>
         </div>
-        <div class="study-stats">
-          <div class="study-stat">
-            <span class="study-stat-val" id="studyDayNow">0</span>
-            <span class="study-stat-label">已学天数</span>
-          </div>
-          <div class="study-stat">
-            <span class="study-stat-val" id="studyDayLeft">45</span>
-            <span class="study-stat-label">剩余天数</span>
-          </div>
-          <div class="study-stat">
-            <span class="study-stat-val" id="studyHourNow">0</span>
-            <span class="study-stat-label">已学时(h)</span>
-          </div>
-        </div>
+        <span class="task-progress-text" id="taskProgressText">0%</span>
       </div>
-      <div class="study-phases">
-        <div class="study-phase" data-phase="1">
-          <div class="phase-check" data-phase="1"></div>
-          <div class="phase-info">
-            <span class="phase-name">阶段1：网络基础夯实</span>
-            <span class="phase-meta">第1-7天 · 约21h</span>
+      <div class="task-input-wrap">
+        <input type="text" id="taskInput" placeholder="添加学习任务，回车确认..." maxlength="50">
+        <button id="taskAddBtn" title="添加">＋</button>
+      </div>
+      <div class="task-list" id="taskList">
+        <div class="task-empty">暂无任务，添加一个开始学习吧</div>
+      </div>
+    </div>
+
+    <!-- 每日营养食谱 -->
+    <div class="hot-panel recipe-panel">
+      <div class="hot-panel-header">
+        <span class="hot-panel-title">🍱 每日食谱</span>
+        <div style="display:flex;align-items:center;gap:6px;">
+          <div class="recipe-day-tabs">
+            <button class="recipe-day-tab active" data-day="0">今天</button>
+            <button class="recipe-day-tab" data-day="1">明天</button>
           </div>
-        </div>
-        <div class="study-phase" data-phase="2">
-          <div class="phase-check" data-phase="2"></div>
-          <div class="phase-info">
-            <span class="phase-name">阶段2：局域与广域网</span>
-            <span class="phase-meta">第8-14天 · 约21h</span>
-          </div>
-        </div>
-        <div class="study-phase" data-phase="3">
-          <div class="phase-check" data-phase="3"></div>
-          <div class="phase-info">
-            <span class="phase-name">阶段3：路由协议</span>
-            <span class="phase-meta">第15-22天 · 约24h</span>
-          </div>
-        </div>
-        <div class="study-phase" data-phase="4">
-          <div class="phase-check" data-phase="4"></div>
-          <div class="phase-info">
-            <span class="phase-name">阶段4：交换与安全</span>
-            <span class="phase-meta">第23-30天 · 约24h</span>
-          </div>
-        </div>
-        <div class="study-phase" data-phase="5">
-          <div class="phase-check" data-phase="5"></div>
-          <div class="phase-info">
-            <span class="phase-name">阶段5：真题演练</span>
-            <span class="phase-meta">第31-38天 · 约24h</span>
-          </div>
-        </div>
-        <div class="study-phase" data-phase="6">
-          <div class="phase-check" data-phase="6"></div>
-          <div class="phase-info">
-            <span class="phase-name">阶段6：冲刺复习</span>
-            <span class="phase-meta">第39-45天 · 约21h</span>
-          </div>
+          <button class="hot-panel-refresh" id="recipeRefresh" title="换一套食谱">🔄</button>
         </div>
       </div>
-      <div class="study-tip" id="studyTip">💡 今日建议：完成阶段1的OSI模型与TCP/IP协议栈学习</div>
+      <div class="recipe-list" id="recipeList"></div>
     </div>
 
     <div class="hot-panel">
@@ -1499,6 +1727,19 @@ body.has-vnav .layout { padding-left: 92px; }
       </div>
       <div class="info-list" id="lawList"></div>
     </div>
+    <div class="hot-panel">
+      <div class="hot-panel-header">
+        <span class="hot-panel-title">🛠️ 实用工具</span>
+      </div>
+      <div class="tool-grid">
+        <a href="https://tool.lu/" target="_blank" class="tool-item"><span>🔧</span>在线工具</a>
+        <a href="https://c.runoob.com/" target="_blank" class="tool-item"><span>💻</span>代码运行</a>
+        <a href="https://www.bejson.com/" target="_blank" class="tool-item"><span>📋</span>JSON格式化</a>
+        <a href="https://tinypng.com/" target="_blank" class="tool-item"><span>🖼️</span>图片压缩</a>
+        <a href="https://www.baidu.com" target="_blank" class="tool-item"><span>🔍</span>百度搜索</a>
+        <a href="https://translate.google.com" target="_blank" class="tool-item"><span>🌐</span>谷歌翻译</a>
+      </div>
+    </div>
   </aside>
 </div>
 
@@ -1529,10 +1770,22 @@ body.has-vnav .layout { padding-left: 92px; }
     <div class="footer-stat"><span class="num" id="statFavs">0</span><span class="label">我的收藏</span></div>
     <div class="footer-stat"><span class="num" id="statDead">0</span><span class="label">待确认</span></div>
   </div>
+  <div class="friend-links">
+    <span class="friend-links-title">友情链接：</span>
+    <a href="https://tuostudy.upnb.top/" target="_blank">图欧学习导航</a>
+    <a href="https://www.lovejay.top/" target="_blank">Jay的资源库</a>
+    <a href="https://www.ghxi.com/" target="_blank">果核软件</a>
+    <a href="https://www.ghpym.com/" target="_blank">果核剥壳</a>
+    <a href="https://xmsoushu.com/" target="_blank">熊猫搜书</a>
+    <a href="https://search.chongbuluo.com/" target="_blank">虫部落快搜</a>
+    <a href="https://www.3dmgame.com/" target="_blank">3DM游戏网</a>
+    <a href="https://metaso.cn/" target="_blank">秘塔AI搜索</a>
+  </div>
   <div class="footer-actions">
     <button class="footer-btn" id="exportBtn">📤 导出数据</button>
     <button class="footer-btn" id="importBtn">📥 导入数据</button>
     <button class="footer-btn" id="checkHealthBtn">🔄 重新检测链接</button>
+    <button class="footer-btn" id="resetCategoryOrderBtn">↩️ 重置分类排序</button>
     <input type="file" id="importFile" accept=".json" style="display:none">
   </div>
   <p>才哥自研学学习导航 · 你的上网首页</p>
@@ -1580,6 +1833,21 @@ const sites = (window.sitesData || []).map(s => ({
   tags: Array.isArray(s.tags) ? s.tags.map(String) : []
 }));
 const categories = window.categoriesConfig || [];
+
+// 分类自定义排序
+let categoryOrder = JSON.parse(localStorage.getItem("nav_category_order") || "null");
+function applyCategoryOrder() {
+  if (!categoryOrder || !Array.isArray(categoryOrder)) return;
+  categories.sort((a, b) => {
+    const ia = categoryOrder.indexOf(a.name);
+    const ib = categoryOrder.indexOf(b.name);
+    if (ia === -1 && ib === -1) return 0;
+    if (ia === -1) return 1;
+    if (ib === -1) return -1;
+    return ia - ib;
+  });
+}
+applyCategoryOrder();
 
 let currentCategory = "全部";
 let searchKeyword = "";
@@ -1793,8 +2061,44 @@ paletteOverlay.addEventListener("click", (e) => {
 });
 
 // 搜索框点击打开命令面板
-document.getElementById("heroSearchBox").addEventListener("click", openPalette);
+document.getElementById("heroSearchBox").addEventListener("click", (e) => {
+  if (e.target.classList.contains("engine-tab")) return;
+  openPalette();
+});
 document.getElementById("headerSearchBox").addEventListener("click", openPalette);
+
+// 多引擎搜索
+let currentSearchEngine = "site";
+const searchEngineUrls = {
+  baidu: "https://www.baidu.com/s?wd=",
+  bing: "https://www.bing.com/search?q=",
+  zhihu: "https://www.zhihu.com/search?type=content&q=",
+  sogou: "https://www.sogou.com/web?query="
+};
+document.querySelectorAll(".engine-tab").forEach(tab => {
+  tab.addEventListener("click", (e) => {
+    e.stopPropagation();
+    document.querySelectorAll(".engine-tab").forEach(t => t.classList.remove("active"));
+    tab.classList.add("active");
+    currentSearchEngine = tab.dataset.engine;
+    const input = document.getElementById("heroSearch");
+    if (currentSearchEngine === "site") {
+      input.placeholder = "搜索网站名称或描述，或按 Ctrl+K 打开命令面板...";
+    } else {
+      input.placeholder = `使用 ${tab.textContent} 搜索，输入关键词后回车...`;
+      input.removeAttribute("readonly");
+      input.focus();
+    }
+  });
+});
+document.getElementById("heroSearch").addEventListener("keydown", (e) => {
+  if (e.key === "Enter" && currentSearchEngine !== "site") {
+    const keyword = e.target.value.trim();
+    if (keyword && searchEngineUrls[currentSearchEngine]) {
+      window.open(searchEngineUrls[currentSearchEngine] + encodeURIComponent(keyword), "_blank");
+    }
+  }
+});
 
 // ============================================
 // 快捷键
@@ -1826,7 +2130,7 @@ function renderCategoryBar() {
     else if (cat.name === "我的收藏") count = favorites.length;
     else count = sites.filter(s => s.category === cat.name).length;
     const isActive = currentCategory === cat.name || activeSection === cat.name;
-    return `<div class="cat-tag ${isActive ? "active" : ""}" data-cat="${escapeHtml(cat.name)}">${escapeHtml(cat.icon)} ${escapeHtml(cat.name)}<span class="count">${count}</span></div>`;
+    return `<div class="cat-tag ${isActive ? "active" : ""}" data-cat="${escapeHtml(cat.name)}" draggable="true">${escapeHtml(cat.icon)} ${escapeHtml(cat.name)}<span class="count">${count}</span></div>`;
   }).join("");
 
   bar.querySelectorAll(".cat-tag").forEach(tag => {
@@ -1843,6 +2147,43 @@ function renderCategoryBar() {
         else window.scrollTo({ top: document.querySelector('.hero').offsetHeight + 20, behavior: "smooth" });
       }
     });
+
+    // 拖拽排序
+    tag.addEventListener("dragstart", (e) => {
+      tag.classList.add("dragging");
+      e.dataTransfer.effectAllowed = "move";
+      e.dataTransfer.setData("text/plain", tag.dataset.cat);
+    });
+    tag.addEventListener("dragover", (e) => {
+      e.preventDefault();
+      e.dataTransfer.dropEffect = "move";
+      const dragging = bar.querySelector(".dragging");
+      if (dragging && dragging !== tag) {
+        const rect = tag.getBoundingClientRect();
+        const midX = rect.left + rect.width / 2;
+        if (e.clientX < midX) {
+          bar.insertBefore(dragging, tag);
+        } else {
+          bar.insertBefore(dragging, tag.nextSibling);
+        }
+      }
+    });
+    tag.addEventListener("drop", (e) => {
+      e.preventDefault();
+    });
+    tag.addEventListener("dragend", () => {
+      tag.classList.remove("dragging");
+      // 保存新顺序
+      const newOrder = Array.from(bar.querySelectorAll(".cat-tag")).map(t => t.dataset.cat);
+      categoryOrder = newOrder;
+      localStorage.setItem("nav_category_order", JSON.stringify(newOrder));
+      applyCategoryOrder();
+      renderCategoryBar();
+      renderSites();
+      // 同步更新左侧竖直导航
+      renderVerticalNav();
+      showToast("分类顺序已保存", "✅");
+    });
   });
 }
 
@@ -1851,17 +2192,54 @@ function renderCategoryBar() {
 // ============================================
 function renderQuickTags() {
   const quick = document.getElementById("heroQuick");
-  const quickCats = categories.filter(c => !["全部", "最近访问", "我的收藏"].includes(c.name)).slice(0, 8);
-  quick.innerHTML = quickCats.map(c =>
+  const quickCats = categories.filter(c => !["全部", "最近访问", "我的收藏"].includes(c.name)).slice(0, 7);
+  let html = quickCats.map(c =>
     `<span class="hero-quick-tag" data-cat="${escapeHtml(c.name)}">${escapeHtml(c.icon)} ${escapeHtml(c.name)}</span>`
   ).join("");
-  quick.querySelectorAll(".hero-quick-tag").forEach(tag => {
+  html += `<span class="hero-quick-tag random-tag" id="randomRecommend">🎲 随机推荐</span>`;
+  quick.innerHTML = html;
+  quick.querySelectorAll(".hero-quick-tag:not(.random-tag)").forEach(tag => {
     tag.addEventListener("click", () => {
       currentCategory = tag.dataset.cat;
       renderCategoryBar();
       renderSites();
       const el = document.getElementById("section-" + currentCategory);
       if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+  });
+  document.getElementById("randomRecommend").addEventListener("click", () => {
+    const randomSite = sites[Math.floor(Math.random() * sites.length)];
+    showToast(`随机推荐：${randomSite.name}`, "🎲");
+    setTimeout(() => {
+      recordVisit(randomSite.name);
+      window.open(randomSite.url, "_blank");
+    }, 500);
+  });
+}
+
+// ============================================
+// 渲染最近更新
+// ============================================
+function renderRecentUpdate() {
+  const container = document.getElementById("recentUpdateScroll");
+  if (!container) return;
+
+  // 取最后添加的12个网站（新分类的网站）
+  const recent = sites.slice(-12).reverse();
+  container.innerHTML = recent.map(site => `
+    <a href="${escapeHtml(site.url)}" target="_blank" class="recent-item" data-name="${escapeHtml(site.name)}" data-url="${escapeHtml(site.url)}">
+      <div class="recent-item-icon">${site.icon || "🌐"}</div>
+      <div class="recent-item-name">${escapeHtml(site.name)}</div>
+      <div class="recent-item-desc">${escapeHtml(site.desc || "")}</div>
+      <span class="recent-item-cat">${escapeHtml(site.category)}</span>
+    </a>
+  `).join("");
+
+  container.querySelectorAll(".recent-item").forEach(item => {
+    item.addEventListener("click", (e) => {
+      e.preventDefault();
+      recordVisit(item.dataset.name);
+      window.open(item.dataset.url, "_blank");
     });
   });
 }
@@ -1934,29 +2312,37 @@ function renderSection(cat, catSites) {
       <div class="section-header">
         <span class="section-icon">${escapeHtml(cat.icon)}</span>
         <span class="section-title">${escapeHtml(cat.name)}</span>
-        <span class="section-count">${catSites.length} 个</span>
+        <span class="section-count">共 ${catSites.length} 个</span>
         <span class="section-health" style="display:none"></span>
-        <div class="section-sort">
-          <button class="sort-btn ${sortMode==='default'?'active':''}" data-sort="default">默认</button>
-          <button class="sort-btn ${sortMode==='name'?'active':''}" data-sort="name">名称</button>
-          <button class="sort-btn ${sortMode==='hot'?'active':''}" data-sort="hot">热度</button>
+        <div class="section-actions">
+          <button class="section-more-btn" data-cat="${escapeHtml(cat.name)}">更多 ›</button>
+          <div class="section-sort">
+            <button class="sort-btn ${sortMode==='default'?'active':''}" data-sort="default">默认</button>
+            <button class="sort-btn ${sortMode==='name'?'active':''}" data-sort="name">名称</button>
+            <button class="sort-btn ${sortMode==='hot'?'active':''}" data-sort="hot">热度</button>
+          </div>
         </div>
       </div>
       <div class="card-grid">
-        ${catSites.map(s => renderCard(s)).join("")}
+        ${catSites.map((s, i) => renderCard(s, i)).join("")}
       </div>
     </section>
   `;
 }
 
-function renderCard(s) {
+function renderCard(s, index) {
   const isFav = favorites.includes(s.name);
   const isDead = healthStatus[s.url] === false;
   const tagsHtml = s.tags.map(t => {
-    const cls = t === "热门" ? "tag-hot" : t === "新" ? "tag-new" : "tag-rec";
+    let cls = "tag-rec";
+    if (t === "热门") cls = "tag-hot";
+    else if (t === "新") cls = "tag-new";
+    else if (t === "免费") cls = "tag-free";
+    else if (t === "国外") cls = "tag-foreign";
     return `<span class="tag ${cls}">${escapeHtml(t)}</span>`;
   }).join("");
   const deadTag = '';
+  const idx = (index !== undefined && index !== null) ? String(index + 1).padStart(2, '0') : '';
 
   const avatarHtml = s.icon
     ? `<div class="card-avatar" style="background:${getGradient(s.name)}"><span class="emoji">${escapeHtml(s.icon)}</span></div>`
@@ -1969,6 +2355,7 @@ function renderCard(s) {
         <div class="card-name">${highlightSafe(s.name, searchKeyword)}${tagsHtml}${deadTag}</div>
         <div class="card-desc">${highlightSafe(s.desc, searchKeyword)}</div>
       </div>
+      ${idx ? `<span class="card-index">${idx}</span>` : ''}
       <span class="health-dot ${isDead ? 'dead' : ''}" title="${isDead ? '链接待确认' : '正常'}"></span>
       <button class="fav-btn ${isFav ? "active" : ""}" data-name="${escapeHtml(s.name)}" title="${isFav ? "取消收藏" : "收藏"}">${isFav ? "⭐" : "☆"}</button>
     </div>
@@ -2008,6 +2395,18 @@ function bindCardEvents() {
       e.stopPropagation();
       sortMode = btn.dataset.sort;
       renderSites();
+    });
+  });
+
+  document.querySelectorAll(".section-more-btn").forEach(btn => {
+    btn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const cat = btn.dataset.cat;
+      currentCategory = cat;
+      searchKeyword = "";
+      renderCategoryBar();
+      renderSites();
+      window.scrollTo({ top: document.querySelector('.hero').offsetHeight + 20, behavior: "smooth" });
     });
   });
 }
@@ -2090,66 +2489,72 @@ function applyHealthIndicators() {
 
 document.getElementById("checkHealthBtn").addEventListener("click", () => checkAllHealth(true));
 
+// 重置分类排序
+document.getElementById("resetCategoryOrderBtn").addEventListener("click", () => {
+  localStorage.removeItem("nav_category_order");
+  categoryOrder = null;
+  // 恢复默认顺序（按原始配置顺序）
+  const original = window.categoriesConfig || [];
+  categories.length = 0;
+  original.forEach(c => categories.push(c));
+  renderCategoryBar();
+  renderSites();
+  renderVerticalNav();
+  showToast("分类排序已重置为默认", "↩️");
+});
+
 // ============================================
 // 热点榜单
 // ============================================
 const HOT_API = {
-  weibo: { url: "https://api.vvhan.com/api/hotlist/wbHot", label: "微博热搜" },
-  douyin: { url: "https://api.vvhan.com/api/hotlist/douyinHot", label: "抖音热点" },
-  baidu: { url: "https://api.vvhan.com/api/hotlist/baiduHot", label: "百度热搜" },
-  bili: { url: "https://api.vvhan.com/api/hotlist/bili", label: "B站热门" }
+  kr36: { url: "https://api.vvhan.com/api/hotlist/36Ke", label: "科技前沿" },
+  wallstreetcn: { url: "https://api.vvhan.com/api/hotlist/wallstreetcn", label: "财经速递" },
+  douyin: { url: "https://api.vvhan.com/api/hotlist/douyinHot", label: "政策要闻" },
+  bili: { url: "https://api.vvhan.com/api/hotlist/bili", label: "时政热点" }
 };
 const HOT_CACHE_MS = 30 * 60 * 1000; // 30分钟缓存
 
 // 内置示例数据（API失败时使用）
 const HOT_FALLBACK = {
-  weibo: [
-    { title: "2026年高考成绩公布", hot: "2876万", tag: "爆" },
-    { title: "新能源汽车销量再创新高", hot: "1923万", tag: "热" },
-    { title: "AI大模型最新进展发布", hot: "1654万", tag: "新" },
-    { title: "全国多地迎来高温天气", hot: "1432万", tag: "" },
-    { title: "国产芯片技术取得突破", hot: "1287万", tag: "热" },
-    { title: "世界杯预选赛最新战报", hot: "1156万", tag: "" },
-    { title: "暑期档电影票房破纪录", hot: "987万", tag: "新" },
-    { title: "高校毕业生就业政策发布", hot: "876万", tag: "" },
-    { title: "元宇宙概念再度升温", hot: "765万", tag: "" },
-    { title: "全民健身日活动启动", hot: "654万", tag: "" }
+  wallstreetcn: [
+    { title: "美联储最新利率决议公布", hot: "2876万", tag: "热" },
+    { title: "A股三大指数集体收涨", hot: "1923万", tag: "" },
+    { title: "人民币汇率最新走势", hot: "1654万", tag: "热" },
+    { title: "新能源汽车销量再创新高", hot: "1432万", tag: "新" },
+    { title: "国际原油价格大幅波动", hot: "1287万", tag: "热" },
+    { title: "黄金价格突破历史新高", hot: "1156万", tag: "" },
+    { title: "房地产市场最新政策解读", hot: "987万", tag: "新" },
+    { title: "全球经济增长预期上调", hot: "876万", tag: "" }
   ],
   douyin: [
-    { title: "挑战全网最火舞蹈", hot: "856万", tag: "热" },
-    { title: "乡村生活记录火出圈", hot: "723万", tag: "新" },
-    { title: "AI绘画教程合集", hot: "654万", tag: "" },
-    { title: "街头美食探店系列", hot: "587万", tag: "热" },
-    { title: "健身打卡30天挑战", hot: "476万", tag: "" },
-    { title: "萌宠日常搞笑瞬间", hot: "432万", tag: "" },
-    { title: "旅行vlog拍摄技巧", hot: "389万", tag: "新" },
-    { title: "家常菜简单做法", hot: "345万", tag: "" },
-    { title: "职场新人避坑指南", hot: "298万", tag: "" },
-    { title: "怀旧经典老歌合集", hot: "267万", tag: "" }
+    { title: "国务院发布最新经济政策", hot: "856万", tag: "热" },
+    { title: "十四五规划中期评估报告", hot: "723万", tag: "新" },
+    { title: "新能源产业扶持政策出台", hot: "654万", tag: "" },
+    { title: "教育改革最新进展", hot: "587万", tag: "热" },
+    { title: "乡村振兴战略实施成效", hot: "476万", tag: "" },
+    { title: "医疗保障体系完善升级", hot: "432万", tag: "" },
+    { title: "数字经济发展规划发布", hot: "389万", tag: "新" },
+    { title: "碳达峰碳中和行动方案", hot: "345万", tag: "" }
   ],
-  baidu: [
-    { title: "十四五规划最新解读", hot: "987万", tag: "热" },
-    { title: "全国天气预报", hot: "876万", tag: "" },
-    { title: "最新疫情防控政策", hot: "765万", tag: "新" },
-    { title: "高考志愿填报指南", hot: "654万", tag: "热" },
-    { title: "人民币汇率最新走势", hot: "543万", tag: "" },
-    { title: "国内油价调整通知", hot: "487万", tag: "" },
-    { title: "节假日安排公布", hot: "432万", tag: "新" },
-    { title: "社保缴费基数调整", hot: "389万", tag: "" },
-    { title: "最新交通违章查询", hot: "345万", tag: "" },
-    { title: "天气预报15天查询", hot: "298万", tag: "" }
+  kr36: [
+    { title: "AI大模型创业公司完成新一轮融资", hot: "2876万", tag: "热" },
+    { title: "新能源汽车销量再创新高", hot: "1923万", tag: "" },
+    { title: "半导体行业最新动态分析", hot: "1654万", tag: "热" },
+    { title: "互联网大厂组织架构调整", hot: "1432万", tag: "新" },
+    { title: "国产芯片技术取得突破", hot: "1287万", tag: "热" },
+    { title: "跨境电商行业发展报告", hot: "1156万", tag: "" },
+    { title: "元宇宙概念再度升温", hot: "987万", tag: "新" },
+    { title: "科技创新企业榜单发布", hot: "876万", tag: "" }
   ],
   bili: [
-    { title: "【硬核科普】量子力学入门", hot: "324万", tag: "热" },
-    { title: "程序员的一天vlog", hot: "287万", tag: "" },
-    { title: "UP主自制机械键盘", hot: "256万", tag: "新" },
-    { title: "经典电影深度解析", hot: "234万", tag: "热" },
-    { title: "Python入门到精通", hot: "198万", tag: "" },
-    { title: "美食纪录片合集", hot: "176万", tag: "" },
-    { title: "数码产品开箱评测", hot: "154万", tag: "新" },
-    { title: "健身教程全攻略", hot: "132万", tag: "" },
-    { title: "历史故事精讲", hot: "118万", tag: "" },
-    { title: "音乐制作入门教程", hot: "98万", tag: "" }
+    { title: "两会精神深度解读", hot: "324万", tag: "热" },
+    { title: "大国重器纪录片合集", hot: "287万", tag: "" },
+    { title: "中国外交最新动向", hot: "256万", tag: "新" },
+    { title: "改革开放成就回顾", hot: "234万", tag: "热" },
+    { title: "脱贫攻坚纪实报道", hot: "198万", tag: "" },
+    { title: "国家安全主题教育", hot: "176万", tag: "" },
+    { title: "党史学习教育专题", hot: "154万", tag: "新" },
+    { title: "强军兴军纪实系列", hot: "132万", tag: "" }
   ]
 };
 
@@ -2250,9 +2655,9 @@ async function fetchHotList(source, force = false) {
 function getSearchUrl(source, title) {
   const encoded = encodeURIComponent(title);
   switch(source) {
-    case "weibo": return "https://s.weibo.com/weibo?q=" + encoded;
-    case "douyin": return "https://www.douyin.com/search/" + encoded;
-    case "baidu": return "https://www.baidu.com/s?wd=" + encoded;
+    case "kr36": return "https://36kr.com/search/articles/" + encoded;
+    case "wallstreetcn": return "https://wallstreetcn.com/search?q=" + encoded;
+    case "douyin": return "https://so.toutiao.com/search?keyword=" + encoded;
     case "bili": return "https://search.bilibili.com/all?keyword=" + encoded;
     default: return "#";
   }
@@ -2272,6 +2677,7 @@ function renderHotList(source, list) {
     const rankClass = i === 0 ? "top1" : i === 1 ? "top2" : i === 2 ? "top3" : "";
     const tagHtml = item.tag ? `<span class="hot-tag ${item.tag === '爆' ? 'boom' : item.tag === '热' ? 'hot' : 'new'}">${escapeHtml(item.tag)}</span>` : "";
     const heatHtml = item.hot ? `<span class="hot-heat">${escapeHtml(item.hot)}</span>` : "";
+    // 优先使用API返回的具体新闻链接，没有则回退到搜索结果页
     const url = item.url ? escapeHtml(item.url) : getSearchUrl(source, item.title);
     return `
       <li class="hot-item" data-url="${url}" data-title="${escapeHtml(item.title)}">
@@ -2282,20 +2688,24 @@ function renderHotList(source, list) {
       </li>`;
   }).join("");
 
-  // 绑定点击事件
+  // 绑定点击事件（新标签页打开具体新闻内容）
   listEl.querySelectorAll(".hot-item").forEach(item => {
     item.addEventListener("click", () => {
       const url = item.dataset.url;
-      if (url && url !== "#") window.open(url, "_blank");
+      if (url && url !== "#") {
+        window.open(url, "_blank");
+      }
     });
   });
 }
 
-// 刷新按钮
+// 刷新按钮（仅处理有 data-source 的热点榜单刷新按钮）
 document.querySelectorAll(".hot-panel-refresh").forEach(btn => {
   btn.addEventListener("click", () => {
     const source = btn.dataset.source;
-    const label = HOT_API[source] ? HOT_API[source].label : source;
+    // 食谱、历史等按钮没有 data-source，有自己的事件处理，这里跳过
+    if (!source || !HOT_API[source]) return;
+    const label = HOT_API[source].label;
     btn.classList.add("spinning");
     showToast(`正在刷新${label}...`, "🔄");
     fetchHotList(source, true).then(() => {
@@ -2307,6 +2717,21 @@ document.querySelectorAll(".hot-panel-refresh").forEach(btn => {
       btn.classList.remove("spinning");
       showToast(`${label}刷新失败，使用缓存数据`, "⚠️");
     });
+  });
+});
+
+// 榜单标题点击跳转到对应平台热搜榜单页（新标签页）
+document.querySelectorAll(".hot-title-clickable").forEach(title => {
+  title.addEventListener("click", () => {
+    const source = title.dataset.source;
+    const boardUrls = {
+      wallstreetcn: "https://wallstreetcn.com/news/global",
+      kr36: "https://36kr.com/hot-list/catalog",
+      douyin: "https://www.toutiao.com/hot-event/hot-board/",
+      bili: "https://www.bilibili.com/v/popular/all"
+    };
+    const url = boardUrls[source];
+    if (url) window.open(url, "_blank");
   });
 });
 
@@ -2673,13 +3098,23 @@ if ("serviceWorker" in navigator && location.protocol !== "file:") {
 renderQuickTags();
 renderCategoryBar();
 renderSites();
+renderRecentUpdate();
 
 // 延迟启动健康检测和热点加载（不阻塞首屏）
 setTimeout(() => checkAllHealth(false), 2000);
 setTimeout(() => {
-  fetchHotList("weibo");
+  // 不清除缓存，优先使用缓存数据，API失败时不至于显示示例数据
+  // 缓存超过30分钟会自动重新获取（在 fetchHotList 中判断）
+  // 清除旧的weibo/zhihu/baidu缓存（已替换）
+  localStorage.removeItem("nav_hot_weibo");
+  localStorage.removeItem("nav_hot_time_weibo");
+  localStorage.removeItem("nav_hot_zhihu");
+  localStorage.removeItem("nav_hot_time_zhihu");
+  localStorage.removeItem("nav_hot_baidu");
+  localStorage.removeItem("nav_hot_time_baidu");
+  fetchHotList("wallstreetcn");
   fetchHotList("douyin");
-  fetchHotList("baidu");
+  fetchHotList("kr36");
   fetchHotList("bili");
   renderInfoList("policy");
   renderInfoList("finance");
@@ -2701,7 +3136,33 @@ setTimeout(() => {
   initLayoutEditor();
   initVerticalNav();
   initStudyPanel();
+  initRecipes();
+  initHistoryToday();
+  setTimeout(showNewsModal, 1200);
+  initWelcome();
 }, 500);
+
+// ============================================
+// 欢迎弹窗
+// ============================================
+function initWelcome() {
+  const welcomed = localStorage.getItem("nav_welcomed");
+  if (!welcomed) {
+    setTimeout(() => {
+      document.getElementById("welcomeOverlay").classList.add("show");
+    }, 800);
+  }
+  document.getElementById("welcomeClose").addEventListener("click", () => {
+    document.getElementById("welcomeOverlay").classList.remove("show");
+    localStorage.setItem("nav_welcomed", "1");
+  });
+  document.getElementById("welcomeOverlay").addEventListener("click", (e) => {
+    if (e.target.id === "welcomeOverlay") {
+      document.getElementById("welcomeOverlay").classList.remove("show");
+      localStorage.setItem("nav_welcomed", "1");
+    }
+  });
+}
 
 // ============================================
 // Favicon 懒加载
@@ -3381,6 +3842,19 @@ function initLayoutEditor() {
 // ============================================
 // 左侧竖直导航
 // ============================================
+function renderVerticalNav() {
+  const container = document.getElementById("vnavCategories");
+  if (!container) return;
+  // 排除"全部"、"最近访问"、"我的收藏"这些固定项
+  const cats = categories.filter(c => !["全部", "最近访问", "我的收藏"].includes(c.name));
+  container.innerHTML = cats.map(cat => `
+    <div class="vnav-item" data-target="${escapeHtml(cat.name)}" title="${escapeHtml(cat.name)}">
+      <span class="vnav-icon">${escapeHtml(cat.icon || "📁")}</span>
+      <span class="vnav-label">${escapeHtml(cat.name.length > 4 ? cat.name.slice(0, 4) : cat.name)}</span>
+    </div>
+  `).join("");
+}
+
 function initVerticalNav() {
   // 只在宽屏显示
   if (window.innerWidth < 1500) return;
@@ -3389,182 +3863,677 @@ function initVerticalNav() {
   const nav = document.getElementById("verticalNav");
   if (!nav) return;
 
-  const items = nav.querySelectorAll(".vnav-item");
+  // 动态渲染分类项
+  renderVerticalNav();
 
-  // 点击跳转
-  items.forEach(item => {
-    item.addEventListener("click", () => {
-      const target = item.dataset.target;
-      if (target === "top") {
-        window.scrollTo({ top: 0, behavior: "smooth" });
-        return;
+  function bindNavEvents() {
+    const items = nav.querySelectorAll(".vnav-item");
+
+    // 点击跳转
+    items.forEach(item => {
+      item.addEventListener("click", () => {
+        const target = item.dataset.target;
+        if (target === "top") {
+          window.scrollTo({ top: 0, behavior: "smooth" });
+          return;
+        }
+        if (target === "all") {
+          currentCategory = "全部";
+          searchKeyword = "";
+          renderCategoryBar();
+          renderSites();
+          setTimeout(() => {
+            const first = document.querySelector(".section");
+            if (first) first.scrollIntoView({ behavior: "smooth", block: "start" });
+          }, 100);
+          return;
+        }
+        if (target === "recent") {
+          currentCategory = "最近访问";
+          searchKeyword = "";
+          renderCategoryBar();
+          renderSites();
+          window.scrollTo({ top: document.querySelector('.hero').offsetHeight + 20, behavior: "smooth" });
+          return;
+        }
+        if (target === "favorites") {
+          currentCategory = "我的收藏";
+          searchKeyword = "";
+          renderCategoryBar();
+          renderSites();
+          window.scrollTo({ top: document.querySelector('.hero').offsetHeight + 20, behavior: "smooth" });
+          return;
+        }
+        // 普通分类：先切回全部视图，再滚动到对应分类
+        if (currentCategory !== "全部" || searchKeyword) {
+          currentCategory = "全部";
+          searchKeyword = "";
+          renderCategoryBar();
+          renderSites();
+        }
+        setTimeout(() => {
+          const el = document.getElementById("section-" + target);
+          if (el) {
+            el.scrollIntoView({ behavior: "smooth", block: "start" });
+          } else {
+            window.scrollTo({ top: document.querySelector('.hero').offsetHeight + 20, behavior: "smooth" });
+          }
+        }, 100);
+      });
+    });
+
+    // 滚动高亮
+    let ticking = false;
+    window.addEventListener("scroll", () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        const scrollY = window.scrollY + 150;
+        let activeTarget = "top";
+
+        if (scrollY > 100) {
+          // 检查各个分类的位置
+          const sections = document.querySelectorAll(".section[id^='section-']");
+          sections.forEach(sec => {
+            if (sec.offsetTop <= scrollY) {
+              const id = sec.id.replace("section-", "");
+              if (id === "recent") activeTarget = "recent";
+              else if (id === "favorites") activeTarget = "favorites";
+              else activeTarget = id;
+            }
+          });
+        }
+
+        items.forEach(item => {
+          item.classList.toggle("active", item.dataset.target === activeTarget);
+        });
+        ticking = false;
+      });
+    }, { passive: true });
+  }
+
+  bindNavEvents();
+}
+
+// ============================================
+// 自定义学习任务面板
+// ============================================
+const TASK_KEY = "nav_study_tasks";
+
+function getTasks() {
+  try { return JSON.parse(localStorage.getItem(TASK_KEY)) || []; }
+  catch (e) { return []; }
+}
+function saveTasks(tasks) {
+  localStorage.setItem(TASK_KEY, JSON.stringify(tasks));
+}
+function renderTasks() {
+  const tasks = getTasks();
+  const list = document.getElementById("taskList");
+  const countEl = document.getElementById("taskCount");
+  const progressFill = document.getElementById("taskProgressFill");
+  const progressText = document.getElementById("taskProgressText");
+
+  if (!list) return;
+
+  if (tasks.length === 0) {
+    list.innerHTML = '<div class="task-empty">暂无任务，添加一个开始学习吧</div>';
+  } else {
+    list.innerHTML = tasks.map((task, idx) => `
+      <div class="task-item ${task.done ? 'done' : ''}" data-idx="${idx}">
+        <div class="task-checkbox" data-idx="${idx}"></div>
+        <span class="task-text" data-idx="${idx}">${escapeHtml(task.text)}</span>
+        <button class="task-del" data-idx="${idx}" title="删除">✕</button>
+      </div>
+    `).join("");
+  }
+
+  // 更新统计
+  const doneCount = tasks.filter(t => t.done).length;
+  const total = tasks.length;
+  const progress = total > 0 ? Math.round((doneCount / total) * 100) : 0;
+
+  if (countEl) countEl.textContent = `${doneCount}/${total}`;
+  if (progressFill) progressFill.style.width = progress + "%";
+  if (progressText) progressText.textContent = progress + "%";
+
+  // 绑定事件
+  list.querySelectorAll(".task-checkbox").forEach(cb => {
+    cb.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const idx = parseInt(cb.dataset.idx);
+      const tasks = getTasks();
+      if (tasks[idx]) {
+        tasks[idx].done = !tasks[idx].done;
+        saveTasks(tasks);
+        renderTasks();
       }
-      if (target === "all") {
-        // 滚动到第一个分类
-        const first = document.querySelector(".section");
-        if (first) first.scrollIntoView({ behavior: "smooth", block: "start" });
-        return;
-      }
-      if (target === "recent") {
-        const el = document.getElementById("section-recent");
-        if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
-        return;
-      }
-      if (target === "favorites") {
-        const el = document.getElementById("section-favorites");
-        if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
-        return;
-      }
-      const el = document.getElementById("section-" + target);
-      if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
     });
   });
 
-  // 滚动高亮
-  let ticking = false;
-  window.addEventListener("scroll", () => {
-    if (ticking) return;
-    ticking = true;
-    requestAnimationFrame(() => {
-      const scrollY = window.scrollY + 150;
-      let activeTarget = "top";
-
-      if (scrollY > 100) {
-        // 检查各个分类的位置
-        const sections = document.querySelectorAll(".section[id^='section-']");
-        sections.forEach(sec => {
-          if (sec.offsetTop <= scrollY) {
-            const id = sec.id.replace("section-", "");
-            if (id === "recent") activeTarget = "recent";
-            else if (id === "favorites") activeTarget = "favorites";
-            else activeTarget = id;
-          }
-        });
+  list.querySelectorAll(".task-text").forEach(text => {
+    text.addEventListener("click", () => {
+      const idx = parseInt(text.dataset.idx);
+      const tasks = getTasks();
+      if (tasks[idx]) {
+        tasks[idx].done = !tasks[idx].done;
+        saveTasks(tasks);
+        renderTasks();
       }
-
-      items.forEach(item => {
-        item.classList.toggle("active", item.dataset.target === activeTarget);
-      });
-      ticking = false;
     });
-  }, { passive: true });
-}
+  });
 
-// ============================================
-// 学习进度面板
-// ============================================
-const STUDY_START = new Date("2026-08-31");
-const STUDY_END = new Date("2026-10-15");
-const STUDY_TOTAL_DAYS = 45;
-const STUDY_HOURS_PER_DAY = 3;
-const STUDY_PHASES = [
-  { name: "阶段1：网络基础夯实", days: "第1-7天", hours: "约21h", tip: "完成OSI模型、TCP/IP协议栈、IP地址与子网划分" },
-  { name: "阶段2：局域与广域网", days: "第8-14天", hours: "约21h", tip: "学习以太网、VLAN、广域网技术与VPN" },
-  { name: "阶段3：路由协议", days: "第15-22天", hours: "约24h", tip: "掌握静态路由、RIP、OSPF、BGP等路由协议" },
-  { name: "阶段4：交换与安全", days: "第23-30天", hours: "约24h", tip: "学习交换机原理、ACL、防火墙、网络安全技术" },
-  { name: "阶段5：真题演练", days: "第31-38天", hours: "约24h", tip: "做近5年真题，总结错题，查漏补缺" },
-  { name: "阶段6：冲刺复习", days: "第39-45天", hours: "约21h", tip: "回顾核心考点，模拟考试，调整心态" }
-];
-const STUDY_KEY = "nav_study_progress";
-
-function getStudyProgress() {
-  try { return JSON.parse(localStorage.getItem(STUDY_KEY)) || { phases: [] }; }
-  catch (e) { return { phases: [] }; }
+  list.querySelectorAll(".task-del").forEach(btn => {
+    btn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const idx = parseInt(btn.dataset.idx);
+      const tasks = getTasks();
+      tasks.splice(idx, 1);
+      saveTasks(tasks);
+      renderTasks();
+      showToast("已删除任务", "🗑️");
+    });
+  });
 }
-function saveStudyProgress(data) {
-  localStorage.setItem(STUDY_KEY, JSON.stringify(data));
+function addTask(text) {
+  if (!text || !text.trim()) return;
+  const tasks = getTasks();
+  tasks.push({ text: text.trim(), done: false, created: Date.now() });
+  saveTasks(tasks);
+  renderTasks();
+  showToast("任务已添加", "✅");
 }
 function initStudyPanel() {
-  const now = new Date();
-  const diffTime = now - STUDY_START;
-  const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-  const dayNow = Math.max(0, Math.min(diffDays, STUDY_TOTAL_DAYS));
-  const dayLeft = Math.max(0, STUDY_TOTAL_DAYS - dayNow);
-  const hourNow = dayNow * STUDY_HOURS_PER_DAY;
-  const progress = Math.round((dayNow / STUDY_TOTAL_DAYS) * 100);
+  renderTasks();
 
-  // 倒计时
-  const countdownEl = document.getElementById("studyCountdown");
-  if (countdownEl) {
-    const examDiff = STUDY_END - now;
-    const examDays = Math.ceil(examDiff / (1000 * 60 * 60 * 24));
-    if (examDays > 0) {
-      countdownEl.textContent = "距考试 " + examDays + " 天";
-    } else {
-      countdownEl.textContent = "考试进行中";
-    }
-  }
+  const input = document.getElementById("taskInput");
+  const addBtn = document.getElementById("taskAddBtn");
 
-  // 统计数据
-  const dayNowEl = document.getElementById("studyDayNow");
-  const dayLeftEl = document.getElementById("studyDayLeft");
-  const hourNowEl = document.getElementById("studyHourNow");
-  if (dayNowEl) dayNowEl.textContent = dayNow;
-  if (dayLeftEl) dayLeftEl.textContent = dayLeft;
-  if (hourNowEl) hourNowEl.textContent = hourNow;
-
-  // 进度环
-  const ring = document.getElementById("studyProgressRing");
-  const ringText = document.getElementById("studyProgressText");
-  if (ring) {
-    const circumference = 2 * Math.PI * 34;
-    const offset = circumference - (progress / 100) * circumference;
-    ring.style.strokeDashoffset = offset;
-  }
-  if (ringText) ringText.textContent = progress + "%";
-
-  // 阶段勾选
-  const progressData = getStudyProgress();
-  const phaseEls = document.querySelectorAll(".study-phase");
-  phaseEls.forEach((phaseEl, idx) => {
-    const isDone = progressData.phases.includes(idx + 1);
-    if (isDone) phaseEl.classList.add("done");
-
-    phaseEl.addEventListener("click", () => {
-      phaseEl.classList.toggle("done");
-      const data = getStudyProgress();
-      if (phaseEl.classList.contains("done")) {
-        if (!data.phases.includes(idx + 1)) data.phases.push(idx + 1);
-      } else {
-        data.phases = data.phases.filter(p => p !== idx + 1);
+  if (input) {
+    input.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        addTask(input.value);
+        input.value = "";
       }
-      saveStudyProgress(data);
-      updateStudyProgress();
+    });
+  }
+  if (addBtn) {
+    addBtn.addEventListener("click", () => {
+      addTask(input.value);
+      input.value = "";
+      input.focus();
+    });
+  }
+}
+
+// ============================================
+// 每日营养食谱
+// ============================================
+const RECIPE_WEEK = [
+  { // 周一
+    breakfast: { name: "燕麦牛奶粥+水煮蛋", emoji: "🥣", meal: "早餐", calories: "约320千卡", time: "15分钟",
+      ingredients: ["燕麦片50g", "牛奶250ml", "鸡蛋1个", "蜂蜜少许", "蓝莓几颗"],
+      steps: ["燕麦片放入碗中，倒入热牛奶搅拌均匀", "鸡蛋冷水下锅，水开后煮6分钟捞出过凉水", "剥壳后对半切开，放在燕麦粥上", "淋上少许蜂蜜，撒上蓝莓即可享用"] },
+    lunch: { name: "鸡胸肉藜麦沙拉", emoji: "🥗", meal: "午餐", calories: "约450千卡", time: "25分钟",
+      ingredients: ["鸡胸肉150g", "藜麦80g", "生菜100g", "小番茄6个", "黄瓜半根", "橄榄油、盐、黑胡椒"],
+      steps: ["藜麦洗净，加水煮15分钟至透明，沥干备用", "鸡胸肉用盐和黑胡椒腌制10分钟，平底锅煎至两面金黄", "生菜撕成小片，小番茄对半切，黄瓜切片", "所有食材混合，淋上橄榄油和柠檬汁，撒盐和黑胡椒拌匀"] },
+    dinner: { name: "清蒸鲈鱼+蒜蓉西兰花", emoji: "🐟", meal: "晚餐", calories: "约380千卡", time: "30分钟",
+      ingredients: ["鲈鱼1条约400g", "西兰花200g", "葱姜蒜适量", "蒸鱼豉油2勺", "料酒1勺"],
+      steps: ["鲈鱼处理干净，两面划刀，抹上料酒和盐腌制10分钟", "鱼身铺上葱姜丝，水开后大火蒸8分钟", "西兰花切小朵，沸水焯1分钟捞出沥干", "蒜末爆香，下西兰花翻炒，加盐调味", "蒸好的鱼倒掉汤汁，淋上蒸鱼豉油，浇上热油即可"] }
+  },
+  { // 周二
+    breakfast: { name: "全麦三明治+鲜榨橙汁", emoji: "🥪", meal: "早餐", calories: "约350千卡", time: "10分钟",
+      ingredients: ["全麦面包2片", "鸡蛋1个", "生菜2片", "番茄1个", "橙子2个", "低脂芝士1片"],
+      steps: ["鸡蛋煎成荷包蛋，番茄切片", "全麦面包烤至微焦", "依次放上生菜、番茄、芝士、煎蛋", "盖上另一片面包，对角切开", "橙子去皮榨汁，搭配三明治享用"] },
+    lunch: { name: "番茄牛肉面+凉拌黄瓜", emoji: "🍜", meal: "午餐", calories: "约520千卡", time: "35分钟",
+      ingredients: ["牛腩200g", "番茄2个", "面条100g", "黄瓜1根", "葱姜蒜、八角、香叶", "生抽、老抽、盐"],
+      steps: ["牛腩切块焯水，捞出洗净", "热油爆香葱姜蒜，下番茄炒出汁", "加入牛腩、生抽、老抽、八角、香叶，加水炖40分钟", "黄瓜拍碎，加蒜末、醋、盐拌匀", "面条煮熟捞出，浇上番茄牛肉汤，配凉拌黄瓜"] },
+    dinner: { name: "虾仁豆腐煲+糙米饭", emoji: "🍤", meal: "晚餐", calories: "约400千卡", time: "25分钟",
+      ingredients: ["鲜虾10只", "嫩豆腐1盒", "糙米饭1碗", "葱姜蒜、豆瓣酱1勺", "生抽、淀粉"],
+      steps: ["虾去壳去虾线，用盐和淀粉抓匀", "豆腐切小块，沸水焯一下去豆腥", "热油爆香蒜末，下豆瓣酱炒出红油", "加水烧开，放入豆腐煮3分钟", "放入虾仁煮至变红，勾芡收汁，撒葱花", "配糙米饭食用"] }
+  },
+  { // 周三
+    breakfast: { name: "紫薯山药粥+坚果", emoji: "🍠", meal: "早餐", calories: "约300千卡", time: "20分钟",
+      ingredients: ["紫薯1个", "山药半根", "大米30g", "混合坚果15g", "枸杞少许"],
+      steps: ["紫薯和山药去皮切小块", "大米洗净，与紫薯山药一起放入锅中", "加水大火煮开后转小火煮20分钟", "煮至浓稠，撒上枸杞和坚果即可"] },
+    lunch: { name: "照烧鸡腿饭+味增汤", emoji: "🍗", meal: "午餐", calories: "约550千卡", time: "30分钟",
+      ingredients: ["去骨鸡腿1只", "米饭1碗", "豆腐50g", "海带少许", "味增酱1勺", "照烧汁（酱油、味淋、糖）"],
+      steps: ["鸡腿用照烧汁腌制20分钟", "平底锅鸡皮朝下煎至金黄，翻面继续煎", "倒入剩余照烧汁，小火收汁", "豆腐和海带加水煮开，放入味增酱搅匀", "鸡腿切片铺在米饭上，浇上酱汁，配味增汤"] },
+    dinner: { name: "蔬菜意面+牛油果沙拉", emoji: "🍝", meal: "晚餐", calories: "约420千卡", time: "25分钟",
+      ingredients: ["全麦意面80g", "西兰花、彩椒、蘑菇各50g", "牛油果半个", "小番茄4个", "橄榄油、蒜、盐、黑胡椒"],
+      steps: ["意面煮8分钟捞出，留少许面汤", "蒜末爆香，下切好的蔬菜翻炒", "加入意面和少许面汤，加盐和黑胡椒拌匀", "牛油果切片，与小番茄混合，淋橄榄油", "意面装盘，搭配牛油果沙拉"] }
+  },
+  { // 周四
+    breakfast: { name: "香蕉松饼+酸奶", emoji: "🥞", meal: "早餐", calories: "约340千卡", time: "15分钟",
+      ingredients: ["香蕉1根", "鸡蛋2个", "燕麦粉30g", "希腊酸奶100g", "蜂蜜少许"],
+      steps: ["香蕉压成泥，加入鸡蛋和燕麦粉搅匀", "平底锅小火，倒入面糊煎至两面金黄", "松饼叠放，淋上酸奶和蜂蜜", "可搭配新鲜水果"] },
+    lunch: { name: "三文鱼饭团+海带汤", emoji: "🍙", meal: "午餐", calories: "约480千卡", time: "30分钟",
+      ingredients: ["三文鱼100g", "米饭1碗", "海苔2片", "海带、豆腐适量", "寿司醋、盐、芝麻"],
+      steps: ["三文鱼用盐腌制10分钟，平底锅煎熟", "米饭加寿司醋和芝麻拌匀", "取一团米饭压扁，放入三文鱼，包成三角形", "裹上一圈海苔", "海带和豆腐加水煮开，加盐调味"] },
+    dinner: { name: "冬瓜丸子汤+杂粮馒头", emoji: "🍲", meal: "晚餐", calories: "约360千卡", time: "30分钟",
+      ingredients: ["猪肉馅150g", "冬瓜300g", "杂粮馒头1个", "葱姜、盐、生抽、淀粉"],
+      steps: ["猪肉馅加葱姜末、盐、生抽、淀粉，顺时针搅打上劲", "冬瓜去皮切薄片", "锅中加水烧开，转小火，将肉馅挤成丸子下锅", "丸子浮起后放入冬瓜，煮5分钟", "加盐调味，撒葱花，配杂粮馒头"] }
+  },
+  { // 周五
+    breakfast: { name: "鸡蛋灌饼+豆浆", emoji: "🥚", meal: "早餐", calories: "约380千卡", time: "20分钟",
+      ingredients: ["手抓饼1张", "鸡蛋1个", "生菜2片", "甜面酱少许", "黄豆30g（提前泡）"],
+      steps: ["黄豆加水打成豆浆，煮沸过滤", "手抓饼平底锅煎至两面金黄", "在饼上戳个洞，倒入打散的鸡蛋", "煎至鸡蛋凝固，刷甜面酱，放生菜卷起", "搭配热豆浆享用"] },
+    lunch: { name: "黑椒牛柳饭+炒时蔬", emoji: "🥩", meal: "午餐", calories: "约560千卡", time: "30分钟",
+      ingredients: ["牛里脊200g", "米饭1碗", "洋葱半个、青椒1个", "黑胡椒酱2勺", "生抽、淀粉、油"],
+      steps: ["牛肉切条，用生抽、淀粉、油腌制15分钟", "洋葱和青椒切丝", "热油下牛肉快速滑炒至变色盛出", "另起油锅炒洋葱和青椒，加黑胡椒酱", "倒入牛肉翻炒均匀，铺在米饭上"] },
+    dinner: { name: "菌菇鸡汤+蒸南瓜", emoji: "🍗", meal: "晚餐", calories: "约350千卡", time: "40分钟",
+      ingredients: ["鸡腿1只", "香菇、金针菇、杏鲍菇各50g", "南瓜200g", "姜、盐、枸杞"],
+      steps: ["鸡腿焯水，放入砂锅，加姜片和水", "大火烧开后转小火炖30分钟", "加入各种菌菇继续炖10分钟", "南瓜切块，蒸锅蒸15分钟", "鸡汤加盐和枸杞调味，搭配蒸南瓜"] }
+  },
+  { // 周六
+    breakfast: { name: "法式吐司+水果杯", emoji: "🍞", meal: "早餐", calories: "约360千卡", time: "15分钟",
+      ingredients: ["吐司2片", "鸡蛋1个", "牛奶50ml", "黄油10g", "草莓、蓝莓、香蕉适量", "糖粉少许"],
+      steps: ["鸡蛋加牛奶打散，吐司浸泡其中", "平底锅放黄油融化，放入吐司煎至两面金黄", "水果切好放入杯中", "吐司装盘，撒上糖粉，搭配水果杯"] },
+    lunch: { name: "韩式拌饭+海带汤", emoji: "🍚", meal: "午餐", calories: "约540千卡", time: "35分钟",
+      ingredients: ["米饭1碗", "牛肉末100g", "菠菜、豆芽、胡萝卜、蕨菜各50g", "鸡蛋1个", "韩式辣酱、香油、芝麻"],
+      steps: ["各种蔬菜分别焯水，加盐和香油拌匀", "牛肉末用酱油和糖炒熟", "米饭放入碗中，铺上蔬菜和牛肉", "中间放煎蛋，加韩式辣酱和香油", "撒上芝麻，吃时拌匀，配海带汤"] },
+    dinner: { name: "蒜蓉粉丝蒸扇贝+清炒油麦菜", emoji: "🦪", meal: "晚餐", calories: "约320千卡", time: "25分钟",
+      ingredients: ["扇贝6只", "粉丝1把", "油麦菜200g", "蒜末、小米椒、生抽、蒸鱼豉油"],
+      steps: ["粉丝泡软，铺在扇贝上", "蒜末和小米椒用油爆香，加生抽调成蒜蓉酱", "蒜蓉酱浇在扇贝上，水开后蒸6分钟", "淋上蒸鱼豉油，浇上热油", "油麦菜蒜末清炒，加盐调味"] }
+  },
+  { // 周日
+    breakfast: { name: "广式肠粉+皮蛋瘦肉粥", emoji: "🥟", meal: "早餐", calories: "约400千卡", time: "40分钟",
+      ingredients: ["粘米粉50g、澄粉20g", "鸡蛋1个、肉末30g、葱花", "皮蛋1个、瘦肉50g、大米30g", "酱油、香油、盐"],
+      steps: ["大米煮粥，瘦肉切丝腌制，皮蛋切块", "粥煮稠后放入瘦肉和皮蛋，煮10分钟加盐", "粘米粉和澄粉加水调成面糊", "平盘刷油，倒入面糊，加蛋液和肉末，蒸锅蒸3分钟", "卷起切段，淋酱油和香油，配粥食用"] },
+    lunch: { name: "咖喱鸡肉饭+沙拉", emoji: "🍛", meal: "午餐", calories: "约580千卡", time: "35分钟",
+      ingredients: ["鸡腿肉200g", "土豆1个、胡萝卜1根、洋葱半个", "咖喱块2块", "米饭1碗", "生菜、小番茄沙拉"],
+      steps: ["鸡腿肉切块，土豆胡萝卜洋葱切块", "热油炒洋葱至透明，下鸡肉翻炒", "加水没过食材，煮15分钟", "放入咖喱块，小火煮至浓稠", "浇在米饭上，搭配蔬菜沙拉"] },
+    dinner: { name: "酸汤肥牛+杂粮饭", emoji: "🥘", meal: "晚餐", calories: "约420千卡", time: "25分钟",
+      ingredients: ["肥牛卷200g", "金针菇100g、豆芽100g", "黄灯笼辣椒酱2勺", "蒜末、白醋、盐", "杂粮饭1碗"],
+      steps: ["金针菇和豆芽焯水，铺在碗底", "热油爆香蒜末和黄灯笼辣椒酱", "加水烧开，加白醋和盐调味", "放入肥牛卷煮至变色", "连汤倒入碗中，配杂粮饭"] }
+  }
+];
+
+// 食谱真实图片（Unsplash免费食物图片）
+const RECIPE_IMAGES = [
+  // 周一
+  "https://images.unsplash.com/photo-1517673400267-0251440c45dc?w=200&h=200&fit=crop", // 燕麦粥
+  "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=200&h=200&fit=crop", // 沙拉
+  "https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=200&h=200&fit=crop", // 蒸鱼
+  // 周二
+  "https://images.unsplash.com/photo-1528735602780-2552fd46c7af?w=200&h=200&fit=crop", // 三明治
+  "https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=200&h=200&fit=crop", // 牛肉面
+  "https://images.unsplash.com/photo-1563379926898-05f4575a45d8?w=200&h=200&fit=crop", // 虾仁豆腐
+  // 周三
+  "https://images.unsplash.com/photo-1588416946597-1f615e2e6598?w=200&h=200&fit=crop", // 紫薯粥
+  "https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?w=200&h=200&fit=crop", // 照烧鸡腿饭
+  "https://images.unsplash.com/photo-1473093295043-cdd812d0e601?w=200&h=200&fit=crop", // 意面
+  // 周四
+  "https://images.unsplash.com/photo-1528207776546-365bb710ee93?w=200&h=200&fit=crop", // 松饼
+  "https://images.unsplash.com/photo-1579584425555-c3ce17fd4351?w=200&h=200&fit=crop", // 饭团
+  "https://images.unsplash.com/photo-1547592166-23ac45744acd?w=200&h=200&fit=crop", // 丸子汤
+  // 周五
+  "https://images.unsplash.com/photo-1590301157890-4810ed352733?w=200&h=200&fit=crop", // 鸡蛋灌饼
+  "https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=200&h=200&fit=crop", // 牛柳饭
+  "https://images.unsplash.com/photo-1547592180-85f173990554?w=200&h=200&fit=crop", // 鸡汤
+  // 周六
+  "https://images.unsplash.com/photo-1484723091739-30a097e8f929?w=200&h=200&fit=crop", // 法式吐司
+  "https://images.unsplash.com/photo-1553163147-622ab57be1c7?w=200&h=200&fit=crop", // 拌饭
+  "https://images.unsplash.com/photo-1559737558-2f5a35f4523b?w=200&h=200&fit=crop", // 扇贝
+  // 周日
+  "https://images.unsplash.com/photo-1585032226651-759b368d7246?w=200&h=200&fit=crop", // 肠粉
+  "https://images.unsplash.com/photo-1585032226651-759b368d7246?w=200&h=200&fit=crop", // 咖喱饭
+  "https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=200&h=200&fit=crop", // 酸汤肥牛
+];
+
+let currentRecipeDay = 0;
+let recipeRandomOffset = 0; // 刷新随机偏移
+
+function getRecipeImage(dayIdx, mealIdx) {
+  const idx = (dayIdx * 3 + mealIdx + recipeRandomOffset) % RECIPE_IMAGES.length;
+  return RECIPE_IMAGES[idx];
+}
+
+function renderRecipes() {
+  const list = document.getElementById("recipeList");
+  if (!list) return;
+
+  const today = new Date();
+  const dayIndex = (today.getDay() + currentRecipeDay + recipeRandomOffset) % 7;
+  const recipe = RECIPE_WEEK[dayIndex];
+
+  const meals = [
+    { key: "breakfast", label: "🌅 早餐" },
+    { key: "lunch", label: "☀️ 午餐" },
+    { key: "dinner", label: "🌙 晚餐" }
+  ];
+
+  list.innerHTML = meals.map((m, mIdx) => {
+    const r = recipe[m.key];
+    const img = getRecipeImage(dayIndex, mIdx);
+    return `
+      <div class="recipe-card" data-meal="${m.key}" data-day="${currentRecipeDay}" data-random="${recipeRandomOffset}">
+        <img class="recipe-img" src="${img}" alt="${escapeHtml(r.name)}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+        <div class="recipe-img-fallback" style="display:none;width:52px;height:52px;border-radius:10px;align-items:center;justify-content:center;font-size:24px;background:linear-gradient(135deg,#f0f0f0,#e0e0e0);flex-shrink:0;">${r.emoji}</div>
+        <div class="recipe-info">
+          <div class="recipe-meal">${m.label}</div>
+          <div class="recipe-name">${escapeHtml(r.name)}</div>
+          <div class="recipe-meta">${r.calories} · ${r.time}</div>
+        </div>
+        <span class="recipe-arrow">›</span>
+      </div>
+    `;
+  }).join("");
+
+  list.querySelectorAll(".recipe-card").forEach(card => {
+    card.addEventListener("click", () => {
+      const meal = card.dataset.meal;
+      const day = parseInt(card.dataset.day);
+      const random = parseInt(card.dataset.random);
+      const idx = (today.getDay() + day + random) % 7;
+      showRecipeDetail(RECIPE_WEEK[idx][meal], getRecipeImage(idx, ["breakfast","lunch","dinner"].indexOf(meal)));
+    });
+  });
+}
+
+function showRecipeDetail(recipe, image) {
+  const overlay = document.createElement("div");
+  overlay.className = "recipe-modal-overlay";
+  const imgHtml = image
+    ? `<img class="recipe-modal-img" src="${image}" alt="${escapeHtml(recipe.name)}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+       <div style="display:none;width:64px;height:64px;border-radius:14px;align-items:center;justify-content:center;font-size:32px;background:linear-gradient(135deg,#f0f0f0,#e0e0e0);flex-shrink:0;">${recipe.emoji}</div>`
+    : `<div style="width:64px;height:64px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:32px;background:linear-gradient(135deg,#f0f0f0,#e0e0e0);flex-shrink:0;">${recipe.emoji}</div>`;
+  overlay.innerHTML = `
+    <div class="recipe-modal">
+      <div class="recipe-modal-header">
+        ${imgHtml}
+        <div class="recipe-modal-title">
+          <div class="recipe-modal-name">${escapeHtml(recipe.name)}</div>
+          <div class="recipe-modal-meta">${recipe.meal} · ${recipe.calories} · 烹饪约${recipe.time}</div>
+        </div>
+        <button class="recipe-modal-close" id="recipeClose">✕</button>
+      </div>
+      <div class="recipe-modal-body">
+        <div class="recipe-section-title">🥬 食材清单</div>
+        <div class="recipe-ingredients">
+          ${recipe.ingredients.map(i => `<span class="recipe-ingredient">${escapeHtml(i)}</span>`).join("")}
+        </div>
+        <div class="recipe-section-title">👨‍🍳 制作步骤</div>
+        <ol class="recipe-steps">
+          ${recipe.steps.map((s, i) => `
+            <li class="recipe-step">
+              <span class="recipe-step-num">${i + 1}</span>
+              <span class="recipe-step-text">${escapeHtml(s)}</span>
+            </li>
+          `).join("")}
+        </ol>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(overlay);
+
+  const close = () => overlay.remove();
+  document.getElementById("recipeClose").addEventListener("click", close);
+  overlay.addEventListener("click", (e) => { if (e.target === overlay) close(); });
+}
+
+function initRecipes() {
+  renderRecipes();
+  document.querySelectorAll(".recipe-day-tab").forEach(tab => {
+    tab.addEventListener("click", () => {
+      document.querySelectorAll(".recipe-day-tab").forEach(t => t.classList.remove("active"));
+      tab.classList.add("active");
+      currentRecipeDay = parseInt(tab.dataset.day);
+      renderRecipes();
+    });
+  });
+  // 刷新按钮：随机换一套食谱
+  const refreshBtn = document.getElementById("recipeRefresh");
+  if (refreshBtn) {
+    refreshBtn.addEventListener("click", () => {
+      recipeRandomOffset = (recipeRandomOffset + 1 + Math.floor(Math.random() * 6)) % 7;
+      renderRecipes();
+      showToast("已换一套食谱", "🍱");
+    });
+  }
+}
+
+// ============================================
+// 历史上的今天
+// ============================================
+const HISTORY_DATA = {
+  "01-01": [{ year: "1912", text: "中华民国成立" }, { year: "1942", text: "联合国宣言签署" }],
+  "03-12": [{ year: "1925", text: "孙中山先生逝世" }, { year: "1999", text: "科索沃战争爆发" }],
+  "05-04": [{ year: "1919", text: "五四运动爆发" }, { year: "1979", text: "撒切尔夫人当选英国首相" }],
+  "07-01": [{ year: "1921", text: "中国共产党成立" }, { year: "1997", text: "香港回归祖国" }],
+  "08-15": [{ year: "1945", text: "日本宣布无条件投降" }, { year: "1969", text: "伍德斯托克音乐节开幕" }],
+  "09-11": [{ year: "2001", text: "美国911恐怖袭击事件" }, { year: "1973", text: "智利军事政变" }],
+  "10-01": [{ year: "1949", text: "中华人民共和国成立" }, { year: "1958", text: "美国国家航空航天局成立" }],
+  "11-11": [{ year: "1918", text: "第一次世界大战结束" }, { year: "1965", text: "罗得西亚单方面宣布独立" }],
+  "12-25": [{ year: "1991", text: "苏联解体" }, { year: "1642", text: "牛顿诞辰" }],
+};
+// 通用历史事件池（刷新时随机显示）
+const HISTORY_POOL = [
+  { year: "1969", text: "人类首次登上月球" },
+  { year: "1989", text: "万维网(WWW)诞生" },
+  { year: "2007", text: "iPhone第一代发布" },
+  { year: "1903", text: "莱特兄弟完成首次动力飞行" },
+  { year: "1945", text: "第一台电子计算机ENIAC诞生" },
+  { year: "1957", text: "苏联发射第一颗人造卫星" },
+  { year: "1961", text: "加加林成为首位进入太空的人类" },
+  { year: "1979", text: "索尼推出随身听Walkman" },
+  { year: "1995", text: "Windows 95操作系统发布" },
+  { year: "1998", text: "谷歌公司成立" },
+  { year: "2001", text: "维基百科上线" },
+  { year: "2003", text: "人类基因组计划完成" },
+  { year: "2008", text: "比特币白皮书发布" },
+  { year: "2012", text: "希格斯玻色子被发现" },
+  { year: "2020", text: "SpaceX实现载人航天商业飞行" },
+];
+let historyRandomIdx = 0;
+function initHistoryToday() {
+  const now = new Date();
+  const month = String(now.getMonth() + 1).padStart(2, "0");
+  const day = String(now.getDate()).padStart(2, "0");
+  const key = month + "-" + day;
+
+  const dateEl = document.getElementById("todayDate");
+  if (dateEl) dateEl.textContent = `${month}月${day}日`;
+
+  const listEl = document.getElementById("historyList");
+  if (!listEl) return;
+
+  let events = HISTORY_DATA[key];
+  if (!events || events.length === 0) {
+    // 从通用事件池中随机取3条
+    const shuffled = [...HISTORY_POOL].sort(() => Math.random() - 0.5);
+    events = shuffled.slice(0, 3);
+  }
+
+  renderHistoryList(events);
+
+  // 刷新按钮
+  const refreshBtn = document.getElementById("historyRefresh");
+  if (refreshBtn) {
+    refreshBtn.addEventListener("click", () => {
+      historyRandomIdx = (historyRandomIdx + 1) % HISTORY_POOL.length;
+      const shuffled = [...HISTORY_POOL].sort(() => Math.random() - 0.5);
+      renderHistoryList(shuffled.slice(0, 4));
+      showToast("已换一批历史事件", "📅");
+    });
+  }
+}
+function renderHistoryList(events) {
+  const listEl = document.getElementById("historyList");
+  if (!listEl) return;
+  listEl.innerHTML = events.map(e => `
+    <div class="history-item">
+      <span class="history-year">${e.year}</span>
+      <span class="history-text">${escapeHtml(e.text)}</span>
+    </div>
+  `).join("");
+}
+
+// ============================================
+// 资讯弹窗
+// ============================================
+const NEWS_DATA = [
+  { cat: "科技", icon: "🔬", title: "AI大模型突破：新一代多模态模型性能提升40%", url: "https://www.baidu.com/s?wd=AI大模型突破", time: "2小时前" },
+  { cat: "科技", icon: "🔬", title: "量子计算新进展：1000量子比特处理器研发成功", url: "https://www.baidu.com/s?wd=量子计算1000量子比特", time: "5小时前" },
+  { cat: "经济", icon: "📈", title: "央行宣布降准0.5个百分点，释放长期资金约1万亿", url: "https://www.baidu.com/s?wd=央行降准0.5个百分点", time: "1小时前" },
+  { cat: "经济", icon: "📈", title: "A股三大指数集体上涨，科技板块领涨", url: "https://www.baidu.com/s?wd=A股三大指数上涨", time: "3小时前" },
+  { cat: "政治", icon: "🏛️", title: "国务院发布新政策：支持民营企业发展若干措施", url: "https://www.baidu.com/s?wd=支持民营企业发展政策", time: "30分钟前" },
+  { cat: "政策", icon: "📋", title: "教育部：推进教育数字化转型，建设智慧校园", url: "https://www.baidu.com/s?wd=教育数字化转型政策", time: "4小时前" },
+  { cat: "民生", icon: "🏠", title: "多地出台住房新政：降低首付比例，支持刚需购房", url: "https://www.baidu.com/s?wd=住房新政降低首付", time: "6小时前" },
+  { cat: "民生", icon: "🏥", title: "医保目录更新：新增30种药品纳入报销范围", url: "https://www.baidu.com/s?wd=医保目录新增药品", time: "8小时前" },
+  { cat: "科技", icon: "🚀", title: "商业航天新突破：可重复使用火箭成功回收", url: "https://www.baidu.com/s?wd=可重复使用火箭回收", time: "1天前" },
+  { cat: "经济", icon: "💱", title: "人民币汇率企稳回升，外汇市场运行平稳", url: "https://www.baidu.com/s?wd=人民币汇率回升", time: "2小时前" },
+];
+function showNewsModal() {
+  // 检查今天是否已经显示过
+  const today = new Date().toDateString();
+  const lastShow = localStorage.getItem("nav_news_lastshow");
+  if (lastShow === today) return;
+
+  const modal = document.createElement("div");
+  modal.className = "news-modal-overlay";
+  modal.id = "newsModal";
+  modal.innerHTML = `
+    <div class="news-modal">
+      <div class="news-modal-header">
+        <span class="news-modal-title">📰 今日资讯速递</span>
+        <button class="news-modal-close" id="newsModalClose">✕</button>
+      </div>
+      <div class="news-modal-tabs">
+        <button class="news-tab active" data-cat="全部">全部</button>
+        <button class="news-tab" data-cat="科技">科技</button>
+        <button class="news-tab" data-cat="经济">经济</button>
+        <button class="news-tab" data-cat="政治">政治</button>
+        <button class="news-tab" data-cat="政策">政策</button>
+        <button class="news-tab" data-cat="民生">民生</button>
+      </div>
+      <div class="news-modal-list" id="newsModalList"></div>
+      <div class="news-modal-footer">
+        <label class="news-no-today">
+          <input type="checkbox" id="newsNoToday"> 今日不再提示
+        </label>
+        <span class="news-update-time">更新于 ${new Date().toLocaleTimeString('zh-CN', {hour:'2-digit',minute:'2-digit'})}</span>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(modal);
+
+  const renderNews = (cat) => {
+    const list = document.getElementById("newsModalList");
+    const filtered = cat === "全部" ? NEWS_DATA : NEWS_DATA.filter(n => n.cat === cat);
+    list.innerHTML = filtered.map(n => `
+      <a href="${n.url}" target="_blank" class="news-modal-item">
+        <span class="news-cat-tag news-cat-${n.cat}">${n.icon} ${n.cat}</span>
+        <span class="news-item-title">${escapeHtml(n.title)}</span>
+        <span class="news-item-time">${n.time}</span>
+      </a>
+    `).join("");
+  };
+  renderNews("全部");
+
+  // 标签切换
+  modal.querySelectorAll(".news-tab").forEach(tab => {
+    tab.addEventListener("click", () => {
+      modal.querySelectorAll(".news-tab").forEach(t => t.classList.remove("active"));
+      tab.classList.add("active");
+      renderNews(tab.dataset.cat);
     });
   });
 
-  // 今日建议
-  updateStudyTip(dayNow);
-}
-function updateStudyProgress() {
-  const data = getStudyProgress();
-  const doneCount = data.phases.length;
-  const progress = Math.round((doneCount / 6) * 100);
-  const ring = document.getElementById("studyProgressRing");
-  const ringText = document.getElementById("studyProgressText");
-  if (ring) {
-    const circumference = 2 * Math.PI * 34;
-    const offset = circumference - (progress / 100) * circumference;
-    ring.style.strokeDashoffset = offset;
-  }
-  if (ringText) ringText.textContent = progress + "%";
-}
-function updateStudyTip(dayNow) {
-  const tipEl = document.getElementById("studyTip");
-  if (!tipEl) return;
-  let currentPhase = 0;
-  if (dayNow <= 7) currentPhase = 0;
-  else if (dayNow <= 14) currentPhase = 1;
-  else if (dayNow <= 22) currentPhase = 2;
-  else if (dayNow <= 30) currentPhase = 3;
-  else if (dayNow <= 38) currentPhase = 4;
-  else currentPhase = 5;
+  // 关闭
+  const closeModal = () => {
+    const noToday = document.getElementById("newsNoToday").checked;
+    if (noToday) {
+      localStorage.setItem("nav_news_lastshow", today);
+    }
+    modal.remove();
+  };
+  document.getElementById("newsModalClose").addEventListener("click", closeModal);
+  modal.addEventListener("click", (e) => {
+    if (e.target === modal) closeModal();
+  });
 
-  const data = getStudyProgress();
-  if (data.phases.includes(currentPhase + 1)) {
-    tipEl.textContent = "✅ 当前阶段已完成，继续保持！";
-  } else {
-    tipEl.textContent = "💡 今日建议：" + STUDY_PHASES[currentPhase].tip;
+  // 添加CSS
+  if (!document.getElementById("newsModalStyle")) {
+    const style = document.createElement("style");
+    style.id = "newsModalStyle";
+    style.textContent = `
+      .news-modal-overlay {
+        position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+        background: rgba(0,0,0,0.5); z-index: 10000;
+        display: flex; align-items: center; justify-content: center;
+        backdrop-filter: blur(4px);
+      }
+      .news-modal {
+        background: var(--card); border-radius: 16px;
+        width: 90%; max-width: 600px; max-height: 80vh;
+        display: flex; flex-direction: column;
+        box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        animation: newsModalIn 0.3s ease;
+      }
+      @keyframes newsModalIn {
+        from { opacity: 0; transform: translateY(20px) scale(0.95); }
+        to { opacity: 1; transform: translateY(0) scale(1); }
+      }
+      .news-modal-header {
+        display: flex; align-items: center; justify-content: space-between;
+        padding: 18px 24px; border-bottom: 1px solid var(--border);
+      }
+      .news-modal-title { font-size: 18px; font-weight: 700; }
+      .news-modal-close {
+        background: none; border: none; font-size: 18px;
+        color: var(--text-muted); cursor: pointer; padding: 4px 8px;
+        border-radius: 6px; transition: all 0.2s;
+      }
+      .news-modal-close:hover { background: var(--bg-secondary); color: var(--text); }
+      .news-modal-tabs {
+        display: flex; gap: 6px; padding: 12px 24px;
+        border-bottom: 1px solid var(--border); flex-wrap: wrap;
+      }
+      .news-tab {
+        padding: 5px 14px; font-size: 12px; background: var(--bg-secondary);
+        border: 1px solid transparent; border-radius: 16px;
+        color: var(--text-muted); cursor: pointer; transition: all 0.2s;
+      }
+      .news-tab:hover { color: var(--text-secondary); }
+      .news-tab.active {
+        background: var(--accent-bg); color: var(--accent);
+        border-color: var(--accent);
+      }
+      .news-modal-list {
+        flex: 1; overflow-y: auto; padding: 8px 16px;
+      }
+      .news-modal-item {
+        display: flex; align-items: center; gap: 10px;
+        padding: 12px 12px; border-radius: 10px;
+        text-decoration: none; transition: background 0.15s;
+      }
+      .news-modal-item:hover { background: var(--accent-bg); }
+      .news-cat-tag {
+        font-size: 11px; padding: 2px 8px; border-radius: 6px;
+        flex-shrink: 0; font-weight: 600;
+      }
+      .news-cat-科技 { background: #e3f2fd; color: #1976d2; }
+      .news-cat-经济 { background: #e8f5e9; color: #388e3c; }
+      .news-cat-政治 { background: #fff3e0; color: #f57c00; }
+      .news-cat-政策 { background: #f3e5f5; color: #7b1fa2; }
+      .news-cat-民生 { background: #fce4ec; color: #c2185b; }
+      .news-item-title {
+        flex: 1; font-size: 13.5px; color: var(--text);
+        line-height: 1.4;
+      }
+      .news-item-time {
+        font-size: 11px; color: var(--text-muted); flex-shrink: 0;
+      }
+      .news-modal-footer {
+        display: flex; align-items: center; justify-content: space-between;
+        padding: 12px 24px; border-top: 1px solid var(--border);
+        font-size: 12px; color: var(--text-muted);
+      }
+      .news-no-today { display: flex; align-items: center; gap: 6px; cursor: pointer; }
+      .news-no-today input { cursor: pointer; }
+    `;
+    document.head.appendChild(style);
   }
 }
 </script>

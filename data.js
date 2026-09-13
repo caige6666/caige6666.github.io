@@ -142,6 +142,46 @@ window.sitesData = [
   { category: "实用工具", icon: "✈️", name: "携程", url: "https://www.ctrip.com", desc: "国内领先的在线旅游平台，机票、酒店、火车票、度假", tags: [] },
   { category: "实用工具", icon: "🍜", name: "美团", url: "https://www.meituan.com", desc: "本地生活服务平台，外卖、到店、酒店、电影、团购", tags: ["热门"] },
   { category: "实用工具", icon: "🍔", name: "饿了么", url: "https://www.ele.me", desc: "阿里旗下外卖平台，美食外卖、生鲜超市、医药配送", tags: [] },
+
+  // 💾 软件下载
+  { category: "软件下载", icon: "🥝", name: "果核剥壳", url: "https://www.ghpym.com", desc: "原创破解软件博客，分享绿色软件、去广告软件、实用工具", tags: ["热门"] },
+  { category: "软件下载", icon: "📦", name: "果核软件", url: "https://www.ghxi.com", desc: "专注绿色软件分享，每日更新，软件安全可靠", tags: ["推荐"] },
+  { category: "软件下载", icon: "🍎", name: "我爱mac", url: "https://www.52mac.com", desc: "Mac软件下载站，破解软件、免费软件、游戏、设计素材", tags: [] },
+  { category: "软件下载", icon: "🎵", name: "乐软博客", url: "https://www.leshare.top", desc: "推荐各种优秀实用软件，网络资源的个人博客", tags: [] },
+  { category: "软件下载", icon: "🔧", name: "423down", url: "https://www.423down.com", desc: "绿色软件下载站，专注分享实用软件和工具", tags: ["新"] },
+  { category: "软件下载", icon: "📱", name: "APKPure", url: "https://apkpure.com", desc: "安卓APK下载平台，无需谷歌商店即可下载应用", tags: ["国外"] },
+  { category: "软件下载", icon: "🪟", name: "NEXT, ITELLYOU", url: "https://next.itellyou.cn", desc: "微软官方系统镜像下载，Windows、Office原版镜像", tags: ["推荐"] },
+  { category: "软件下载", icon: "🐧", name: "开源替代方案", url: "https://www.oschina.net", desc: "开源中国，查找开源软件和替代方案", tags: [] },
+
+  // 📚 图书电子书
+  { category: "图书电子书", icon: "🐼", name: "熊猫搜书", url: "https://xmsoushu.com", desc: "电子书搜索引擎，一键搜索多个电子书站资源", tags: ["热门"] },
+  { category: "图书电子书", icon: "📖", name: "SoBooks", url: "https://sobooks.cc", desc: "优质电子书下载站，azw3、epub、mobi、PDF格式", tags: ["推荐"] },
+  { category: "图书电子书", icon: "🏛️", name: "国家数字图书馆", url: "https://www.nlc.cn", desc: "国家图书馆，海量图书、期刊、论文、古籍资源", tags: [] },
+  { category: "图书电子书", icon: "📚", name: "Z-Library", url: "https://z-lib.is", desc: "全球最大的电子图书馆，免费下载电子书和文章", tags: ["国外"] },
+  { category: "图书电子书", icon: "📄", name: "PDF之家", url: "https://www.pdf之家.com", desc: "PDF电子书下载，计算机、经济、文学、科技类书籍", tags: [] },
+  { category: "图书电子书", icon: "🔬", name: "SCI-Hub", url: "https://sci-hub.se", desc: "免费下载学术论文，打破付费墙", tags: ["国外"] },
+  { category: "图书电子书", icon: "📖", name: "古登堡计划", url: "https://www.gutenberg.org", desc: "超过70000册免费电子书，公版图书下载", tags: ["国外"] },
+  { category: "图书电子书", icon: "🐯", name: "苦瓜书盘", url: "https://kgbook.com", desc: "免费电子书分享，mobi、azw3、epub格式", tags: ["新"] },
+
+  // 🎮 游戏资源
+  { category: "游戏资源", icon: "🎮", name: "3DM游戏网", url: "https://www.3dmgame.com", desc: "国内知名游戏网站，单机游戏下载、攻略、资讯", tags: ["热门"] },
+  { category: "游戏资源", icon: "🐱", name: "萌新单机之家", url: "https://www.mengxinji.com", desc: "单机游戏下载站，绿色免安装，每日更新", tags: ["推荐"] },
+  { category: "游戏资源", icon: "💾", name: "SteamUnlocked", url: "https://steamunlocked.net", desc: "免费下载Steam游戏，预安装破解版", tags: ["国外"] },
+  { category: "游戏资源", icon: "🛠️", name: "FLiNG Trainer", url: "https://flingtrainer.com", desc: "单机游戏修改器，支持数千款游戏", tags: ["国外"] },
+  { category: "游戏资源", icon: "📦", name: "CurseForge", url: "https://www.curseforge.com", desc: "游戏模组和插件下载平台，我的世界、魔兽等", tags: [] },
+  { category: "游戏资源", icon: "🕹️", name: "itch.io", url: "https://itch.io", desc: "独立游戏平台，免费和付费独立游戏下载", tags: ["国外"] },
+  { category: "游戏资源", icon: "🐛", name: "虫虫助手", url: "https://www.ccplay.com", desc: "破解游戏、mod游戏、变态版手游下载", tags: [] },
+  { category: "游戏资源", icon: "🎯", name: "机地游戏", url: "https://www.jidi.com", desc: "单机游戏下载，游戏资讯、攻略、评测", tags: ["新"] },
+
+  // 🔍 网盘搜索
+  { category: "网盘搜索", icon: "🐛", name: "虫部落快搜", url: "https://search.chongbuluo.com", desc: "聚合搜索工具，支持网盘、学术、电子书等多维度搜索", tags: ["热门"] },
+  { category: "网盘搜索", icon: "🔍", name: "盘搜搜", url: "https://www.pansoso.com", desc: "百度网盘资源搜索引擎，快速查找网盘文件", tags: ["推荐"] },
+  { category: "网盘搜索", icon: "☁️", name: "UP云搜", url: "https://www.upyunso.com", desc: "网盘资源搜索，支持百度网盘、阿里云盘、夸克", tags: [] },
+  { category: "网盘搜索", icon: "🐟", name: "飞鱼盘搜", url: "https://www.feiyu100.cn", desc: "网盘搜索引擎，海量资源一键搜索", tags: [] },
+  { category: "网盘搜索", icon: "🔎", name: "小不点搜索", url: "https://www.xiaobd.net", desc: "网盘资源搜索，支持多网盘同时检索", tags: ["新"] },
+  { category: "网盘搜索", icon: "📦", name: "SOSO云盘", url: "https://www.sosoyunpan.com", desc: "云盘资源搜索，影视、软件、文档资源", tags: [] },
+  { category: "网盘搜索", icon: "🐝", name: "来搜一下", url: "https://www.laiso.com", desc: "网盘资源聚合搜索，快速定位资源", tags: [] },
+  { category: "网盘搜索", icon: "⚡", name: "小白盘", url: "https://www.xiaobaipan.com", desc: "百度网盘搜索，资源丰富，更新及时", tags: ["推荐"] },
 ];
 
 // 分类配置（顺序、图标）
@@ -158,6 +198,10 @@ window.categoriesConfig = [
   { name: "办公效率", icon: "📝" },
   { name: "购物消费", icon: "🛒" },
   { name: "新闻资讯", icon: "📰" },
+  { name: "软件下载", icon: "💾" },
+  { name: "图书电子书", icon: "📖" },
+  { name: "游戏资源", icon: "🎮" },
+  { name: "网盘搜索", icon: "🔍" },
   { name: "实用工具", icon: "🛠️" },
   { name: "最近访问", icon: "🕐" },
   { name: "我的收藏", icon: "⭐" },
