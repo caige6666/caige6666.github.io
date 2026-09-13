@@ -1481,6 +1481,31 @@ body.has-vnav .layout { padding-left: 92px; }
   background: var(--accent-bg);
 }
 </style>
+
+<!-- ============================================
+     网站访问统计代码
+     ============================================ -->
+
+<!-- 百度统计 -->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4ecb212e3d0fd692ed7455a0bb806cb2";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+<!-- Microsoft Clarity：注册 https://clarity.microsoft.com 后替换下面的 你的Clarity项目ID -->
+<script type="text/javascript">
+  (function(c,l,a,r,i,t,y){
+      c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+      t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+      y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+  })(window, document, "clarity", "script", "你的Clarity项目ID");
+</script>
+
 </head>
 <body>
 
@@ -1768,7 +1793,7 @@ body.has-vnav .layout { padding-left: 92px; }
     <div class="footer-stat"><span class="num" id="statSites">0</span><span class="label">网站总数</span></div>
     <div class="footer-stat"><span class="num" id="statCats">0</span><span class="label">分类数量</span></div>
     <div class="footer-stat"><span class="num" id="statFavs">0</span><span class="label">我的收藏</span></div>
-    <div class="footer-stat"><span class="num" id="statDead">0</span><span class="label">待确认</span></div>
+    <div class="footer-stat"><span class="num" id="statDead">0</span><span class="label">待检测</span></div>
   </div>
   <div class="friend-links">
     <span class="friend-links-title">友情链接：</span>
@@ -1786,9 +1811,11 @@ body.has-vnav .layout { padding-left: 92px; }
     <button class="footer-btn" id="importBtn">📥 导入数据</button>
     <button class="footer-btn" id="checkHealthBtn">🔄 重新检测链接</button>
     <button class="footer-btn" id="resetCategoryOrderBtn">↩️ 重置分类排序</button>
+    <button class="footer-btn" id="updateLogBtn">📋 更新日志 v${CURRENT_VERSION}</button>
     <input type="file" id="importFile" accept=".json" style="display:none">
   </div>
   <p>才哥自研学学习导航 · 你的上网首页</p>
+  <p id="visitStats" style="display:none">📊 本站总访问量 <span id="busuanzi_value_site_pv">--</span> 次 | 访客数 <span id="busuanzi_value_site_uv">--</span> 人次</p>
   <p>数据保存在本地浏览器 · 最后更新：<span id="updateTime"></span></p>
 </footer>
 
@@ -1848,6 +1875,84 @@ function applyCategoryOrder() {
   });
 }
 applyCategoryOrder();
+
+// ============================================
+// 更新日志
+// ============================================
+const CURRENT_VERSION = "2.1.0";
+const UPDATE_LOG = [
+  {
+    version: "2.1.0",
+    date: "2026-09-14",
+    title: "统计监测 + 体验优化",
+    items: [
+      "集成百度统计，可查看实时访问人数、来源、地域分布",
+      "页脚新增访客计数（不蒜子，加载失败自动隐藏）",
+      "四方向热榜：财经速递、科技前沿、政策要闻、时政热点",
+      "顶部分类支持拖拽自定义排序，左侧导航同步更新",
+      "去掉网站卡片编号，界面更简洁",
+      "修复热搜点击跳转，直接进入具体新闻内容页"
+    ]
+  },
+  {
+    version: "2.0.0",
+    date: "2026-09-13",
+    title: "生活服务 + 侧边栏升级",
+    items: [
+      "新增每日营养食谱，今明两天三餐推荐，含真实图片和详细做法",
+      "新增历史上的今天，每天刷新历史事件",
+      "食谱和历史区域右上角增加刷新按钮",
+      "右侧边栏增加股票监控（自选股）和励志文学",
+      "一键工作流：上班模式、学习模式、摸鱼模式"
+    ]
+  },
+  {
+    version: "1.9.0",
+    date: "2026-09-12",
+    title: "导航升级 + 个性化",
+    items: [
+      "左侧新增竖直导航栏，宽屏显示",
+      "网工学习进度替换为可自定义学习任务面板",
+      "可定制仪表盘，自由调整区域布局",
+      "打开网页弹出资讯公告，科技/经济/政策/民生分类筛选"
+    ]
+  },
+  {
+    version: "1.8.0",
+    date: "2026-09-11",
+    title: "热点资讯 + 高价值信息",
+    items: [
+      "左侧4个热榜：百度、B站、今日头条、36氪",
+      "右侧高价值信息：政策、财经、法律导航",
+      "热榜点击直接进入具体新闻内容",
+      "30分钟自动缓存，API失败自动回退"
+    ]
+  },
+  {
+    version: "1.7.0",
+    date: "2026-09-10",
+    title: "资源扩充 + PWA",
+    items: [
+      "网站扩充至140个，16个分类",
+      "新增软件下载、图书电子书、游戏资源、网盘搜索4个分类",
+      "支持PWA，可安装到桌面离线访问",
+      "数据导入导出，一键备份恢复",
+      "健康监控，自动检测死链"
+    ]
+  },
+  {
+    version: "1.0.0",
+    date: "2026-09-03",
+    title: "初始版本",
+    items: [
+      "108个网站，12个分类",
+      "多引擎搜索：站内/百度/必应/知乎/搜狗",
+      "Ctrl+K 命令面板快速搜索",
+      "暗色/亮色主题切换",
+      "收藏夹和最近访问记录"
+    ]
+  }
+];
 
 let currentCategory = "全部";
 let searchKeyword = "";
@@ -2342,7 +2447,8 @@ function renderCard(s, index) {
     return `<span class="tag ${cls}">${escapeHtml(t)}</span>`;
   }).join("");
   const deadTag = '';
-  const idx = (index !== undefined && index !== null) ? String(index + 1).padStart(2, '0') : '';
+  // 去掉卡片编号显示
+  const idx = '';
 
   const avatarHtml = s.icon
     ? `<div class="card-avatar" style="background:${getGradient(s.name)}"><span class="emoji">${escapeHtml(s.icon)}</span></div>`
@@ -3140,6 +3246,20 @@ setTimeout(() => {
   initHistoryToday();
   setTimeout(showNewsModal, 1200);
   initWelcome();
+  checkUpdate();
+
+  // 不蒜子访客统计：加载成功才显示，失败则隐藏
+  setTimeout(() => {
+    const pvEl = document.getElementById("busuanzi_value_site_pv");
+    const statsEl = document.getElementById("visitStats");
+    if (pvEl && statsEl) {
+      const val = pvEl.textContent.trim();
+      if (val && val !== "--" && !isNaN(parseInt(val))) {
+        statsEl.style.display = "";
+      }
+      // 加载失败则保持隐藏，不显示"加载中"
+    }
+  }, 5000);
 }, 500);
 
 // ============================================
@@ -4536,6 +4656,233 @@ function showNewsModal() {
     document.head.appendChild(style);
   }
 }
+
+// ============================================
+// 更新公告弹窗
+// ============================================
+function showUpdateModal(update) {
+  const modal = document.createElement("div");
+  modal.className = "update-modal-overlay";
+  modal.id = "updateModal";
+  modal.innerHTML = `
+    <div class="update-modal-box">
+      <div class="update-modal-header">
+        <span class="update-modal-icon">🎉</span>
+        <div>
+          <div class="update-modal-title">才哥导航更新啦</div>
+          <div class="update-modal-version">v${update.version} · ${update.date} · ${update.title}</div>
+        </div>
+        <button class="update-modal-close" id="updateModalClose">✕</button>
+      </div>
+      <div class="update-modal-body">
+        <div class="update-modal-subtitle">本次更新内容</div>
+        <ul class="update-list">
+          ${update.items.map(item => `<li class="update-item">${escapeHtml(item)}</li>`).join("")}
+        </ul>
+      </div>
+      <div class="update-modal-footer">
+        <button class="update-modal-btn" id="updateModalOk">知道了</button>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(modal);
+  requestAnimationFrame(() => modal.classList.add("show"));
+
+  const close = () => {
+    localStorage.setItem("nav_last_version", CURRENT_VERSION);
+    modal.classList.remove("show");
+    setTimeout(() => modal.remove(), 300);
+  };
+  document.getElementById("updateModalClose").addEventListener("click", close);
+  document.getElementById("updateModalOk").addEventListener("click", close);
+  modal.addEventListener("click", (e) => { if (e.target === modal) close(); });
+
+  // 添加CSS
+  if (!document.getElementById("updateModalStyle")) {
+    const style = document.createElement("style");
+    style.id = "updateModalStyle";
+    style.textContent = `
+      .update-modal-overlay {
+        position: fixed; inset: 0; z-index: 10000;
+        background: rgba(0,0,0,0.5); backdrop-filter: blur(4px);
+        display: flex; align-items: center; justify-content: center;
+        opacity: 0; visibility: hidden; transition: all 0.3s;
+      }
+      .update-modal-overlay.show { opacity: 1; visibility: visible; }
+      .update-modal-box {
+        background: var(--card-bg); border-radius: 16px;
+        width: 90%; max-width: 480px; max-height: 80vh;
+        display: flex; flex-direction: column;
+        box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        transform: scale(0.9) translateY(20px);
+        transition: transform 0.3s;
+        overflow: hidden;
+      }
+      .update-modal-overlay.show .update-modal-box { transform: scale(1) translateY(0); }
+      .update-modal-header {
+        display: flex; align-items: center; gap: 12px;
+        padding: 20px 24px; border-bottom: 1px solid var(--border);
+        background: linear-gradient(135deg, var(--accent-bg), transparent);
+      }
+      .update-modal-icon { font-size: 36px; }
+      .update-modal-title { font-size: 18px; font-weight: 700; color: var(--text); }
+      .update-modal-version { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+      .update-modal-close {
+        margin-left: auto; background: none; border: none;
+        font-size: 18px; color: var(--text-muted); cursor: pointer;
+        width: 32px; height: 32px; border-radius: 8px;
+        display: flex; align-items: center; justify-content: center;
+      }
+      .update-modal-close:hover { background: var(--accent-bg); color: var(--text); }
+      .update-modal-body { padding: 20px 24px; overflow-y: auto; flex: 1; }
+      .update-modal-subtitle {
+        font-size: 13px; font-weight: 600; color: var(--accent);
+        margin-bottom: 12px;
+      }
+      .update-list { list-style: none; padding: 0; margin: 0; }
+      .update-item {
+        font-size: 13.5px; color: var(--text-secondary);
+        line-height: 1.6; padding: 6px 0 6px 20px;
+        position: relative;
+      }
+      .update-item::before {
+        content: "✦"; position: absolute; left: 0;
+        color: var(--accent); font-size: 10px; top: 9px;
+      }
+      .update-modal-footer {
+        padding: 16px 24px; border-top: 1px solid var(--border);
+        display: flex; justify-content: flex-end;
+      }
+      .update-modal-btn {
+        padding: 10px 28px; border-radius: 10px;
+        background: var(--accent); color: #fff;
+        border: none; font-size: 14px; font-weight: 600;
+        cursor: pointer; transition: all 0.2s;
+      }
+      .update-modal-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(6,182,212,0.3); }
+    `;
+    document.head.appendChild(style);
+  }
+}
+
+// ============================================
+// 更新日志弹窗
+// ============================================
+function showUpdateLog() {
+  const modal = document.createElement("div");
+  modal.className = "updatelog-modal-overlay";
+  modal.id = "updateLogModal";
+  modal.innerHTML = `
+    <div class="updatelog-modal-box">
+      <div class="updatelog-modal-header">
+        <span class="updatelog-modal-title">📋 更新日志</span>
+        <button class="updatelog-modal-close" id="updateLogClose">✕</button>
+      </div>
+      <div class="updatelog-modal-body">
+        ${UPDATE_LOG.map((log, i) => `
+          <div class="log-item ${i === 0 ? 'latest' : ''}">
+            <div class="log-item-header">
+              <span class="log-version">v${log.version}</span>
+              <span class="log-date">${log.date}</span>
+              ${i === 0 ? '<span class="log-latest-tag">最新</span>' : ''}
+            </div>
+            <div class="log-item-title">${escapeHtml(log.title)}</div>
+            <ul class="log-item-list">
+              ${log.items.map(item => `<li>${escapeHtml(item)}</li>`).join("")}
+            </ul>
+          </div>
+        `).join("")}
+      </div>
+    </div>
+  `;
+  document.body.appendChild(modal);
+  requestAnimationFrame(() => modal.classList.add("show"));
+
+  const close = () => {
+    modal.classList.remove("show");
+    setTimeout(() => modal.remove(), 300);
+  };
+  document.getElementById("updateLogClose").addEventListener("click", close);
+  modal.addEventListener("click", (e) => { if (e.target === modal) close(); });
+
+  // 添加CSS
+  if (!document.getElementById("updateLogStyle")) {
+    const style = document.createElement("style");
+    style.id = "updateLogStyle";
+    style.textContent = `
+      .updatelog-modal-overlay {
+        position: fixed; inset: 0; z-index: 10000;
+        background: rgba(0,0,0,0.5); backdrop-filter: blur(4px);
+        display: flex; align-items: center; justify-content: center;
+        opacity: 0; visibility: hidden; transition: all 0.3s;
+      }
+      .updatelog-modal-overlay.show { opacity: 1; visibility: visible; }
+      .updatelog-modal-box {
+        background: var(--card-bg); border-radius: 16px;
+        width: 90%; max-width: 560px; max-height: 80vh;
+        display: flex; flex-direction: column;
+        box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        transform: scale(0.9) translateY(20px);
+        transition: transform 0.3s;
+        overflow: hidden;
+      }
+      .updatelog-modal-overlay.show .updatelog-modal-box { transform: scale(1) translateY(0); }
+      .updatelog-modal-header {
+        display: flex; align-items: center; justify-content: space-between;
+        padding: 18px 24px; border-bottom: 1px solid var(--border);
+      }
+      .updatelog-modal-title { font-size: 17px; font-weight: 700; color: var(--text); }
+      .updatelog-modal-close {
+        background: none; border: none; font-size: 16px;
+        color: var(--text-muted); cursor: pointer;
+        width: 32px; height: 32px; border-radius: 8px;
+        display: flex; align-items: center; justify-content: center;
+      }
+      .updatelog-modal-close:hover { background: var(--accent-bg); color: var(--text); }
+      .updatelog-modal-body { padding: 16px 24px; overflow-y: auto; flex: 1; }
+      .log-item {
+        padding: 16px; margin-bottom: 12px;
+        background: var(--bg); border-radius: 12px;
+        border-left: 3px solid var(--border);
+      }
+      .log-item.latest { border-left-color: var(--accent); background: var(--accent-bg); }
+      .log-item-header {
+        display: flex; align-items: center; gap: 10px; margin-bottom: 6px;
+      }
+      .log-version {
+        font-size: 14px; font-weight: 700; color: var(--accent);
+      }
+      .log-date { font-size: 12px; color: var(--text-muted); }
+      .log-latest-tag {
+        font-size: 10px; padding: 2px 8px; border-radius: 6px;
+        background: var(--accent); color: #fff; font-weight: 600;
+      }
+      .log-item-title { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 8px; }
+      .log-item-list { margin: 0; padding-left: 18px; }
+      .log-item-list li {
+        font-size: 12.5px; color: var(--text-secondary);
+        line-height: 1.7; padding: 2px 0;
+      }
+    `;
+    document.head.appendChild(style);
+  }
+}
+
+// 检查是否需要弹出更新公告
+function checkUpdate() {
+  const lastVersion = localStorage.getItem("nav_last_version");
+  if (lastVersion !== CURRENT_VERSION) {
+    const latest = UPDATE_LOG[0];
+    setTimeout(() => showUpdateModal(latest), 800);
+  }
+}
+
+// 绑定更新日志按钮
+document.getElementById("updateLogBtn").addEventListener("click", showUpdateLog);
 </script>
+
+<!-- 不蒜子访客统计 -->
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
 </body>
 </html>
