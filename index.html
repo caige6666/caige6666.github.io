@@ -1875,8 +1875,19 @@ applyCategoryOrder();
 // ============================================
 // 更新日志
 // ============================================
-const CURRENT_VERSION = "2.1.0";
+const CURRENT_VERSION = "2.2.0";
 const UPDATE_LOG = [
+  {
+    version: "2.2.0",
+    date: "2026-09-14",
+    title: "股票真实行情 + 百度统计修复",
+    items: [
+      "股票监控改为新浪财经真实行情API，数据准确实时",
+      "修复百度统计代码检测不到问题，改为静态script标签",
+      "修复更新公告弹窗显示不清晰，白色不透明背景",
+      "页面加载自动刷新股票行情，支持点击跳转东方财富详情"
+    ]
+  },
   {
     version: "2.1.0",
     date: "2026-09-14",
@@ -2868,7 +2879,7 @@ function renderInfoList(type) {
 }
 
 // ============================================
-// 股票监控
+// 股票监控（真实行情 - 新浪财经API）
 // ============================================
 const STOCK_KEY = "nav_stocks";
 // 内置股票名称映射（代码→名称）
@@ -2882,8 +2893,84 @@ const STOCK_NAMES = {
   "000568": "泸州老窖", "603288": "海天味业", "601166": "兴业银行",
   "600000": "浦发银行", "601628": "中国人寿", "601668": "中国建筑",
   "600585": "海螺水泥", "000651": "格力电器", "002475": "立讯精密",
-  "300059": "东方财富", "600031": "三一重工", "601088": "中国神华"
+  "300059": "东方财富", "600031": "三一重工", "601088": "中国神华",
+  "688836": "宇树科技-W"
 };
+
+// 获取股票代码前缀（交易所）
+function getStockPrefix(code) {
+  if (code.startsWith("6") || code.startsWith("9")) return "sh";
+  if (code.startsWith("0") || code.startsWith("3")) return "sz";
+  if (code.startsWith("4") || code.startsWith("8")) return "bj";
+  return "sh";
+}
+
+// 通过新浪财经API获取真实行情（JSONP方式）
+function fetchRealQuotes(codes) {
+  return new Promise((resolve, reject) => {
+    const list = codes.map(code => getStockPrefix(code) + code).join(",");
+    const script = document.createElement("script");
+    const callbackName = "stockCallback_" + Date.now();
+    
+    window[callbackName] = function() {
+      try {
+        const results = {};
+        codes.forEach(code => {
+          const prefix = getStockPrefix(code);
+          const varName = "hq_str_" + prefix + code;
+          const data = window[varName];
+          if (data) {
+            const fields = data.split(",");
+            if (fields.length > 3) {
+              const name = fields[0] || STOCK_NAMES[code] || code;
+              const open = parseFloat(fields[1]) || 0;
+              const prevClose = parseFloat(fields[2]) || 0;
+              const price = parseFloat(fields[3]) || 0;
+              const high = parseFloat(fields[4]) || 0;
+              const low = parseFloat(fields[5]) || 0;
+              const change = price - prevClose;
+              const changePct = prevClose > 0 ? (change / prevClose * 100) : 0;
+              results[code] = {
+                name: name,
+                code: code,
+                price: price.toFixed(2),
+                changePct: changePct.toFixed(2),
+                change: change.toFixed(2),
+                high: high.toFixed(2),
+                low: low.toFixed(2),
+                open: open.toFixed(2),
+                prevClose: prevClose.toFixed(2)
+              };
+            }
+          }
+        });
+        resolve(results);
+      } catch (e) {
+        reject(e);
+      } finally {
+        delete window[callbackName];
+        script.remove();
+      }
+    };
+    
+    script.src = "https://hq.sinajs.cn/list=" + list + "&rn=" + Date.now();
+    script.onerror = () => {
+      delete window[callbackName];
+      script.remove();
+      reject(new Error("行情API请求失败"));
+    };
+    document.head.appendChild(script);
+    
+    // 超时处理
+    setTimeout(() => {
+      if (window[callbackName]) {
+        delete window[callbackName];
+        script.remove();
+        reject(new Error("行情请求超时"));
+      }
+    }, 8000);
+  });
+}
 
 function getStocks() {
   try {
@@ -2893,19 +2980,7 @@ function getStocks() {
 function saveStocks(list) {
   localStorage.setItem(STOCK_KEY, JSON.stringify(list));
 }
-// 模拟生成行情数据（本地模式）
-function mockQuote(code) {
-  const base = (parseInt(code.slice(0, 4)) % 50 + 10) + Math.random() * 200;
-  const changePct = (Math.random() * 6 - 3);
-  const price = +(base * (1 + changePct / 100)).toFixed(2);
-  return {
-    name: STOCK_NAMES[code] || "股票" + code,
-    code: code,
-    price: price,
-    changePct: +changePct.toFixed(2),
-    change: +(price - base).toFixed(2)
-  };
-}
+
 function renderStocks() {
   const listEl = document.getElementById("stockList");
   if (!listEl) return;
@@ -2915,7 +2990,7 @@ function renderStocks() {
     return;
   }
   listEl.innerHTML = stocks.map(s => {
-    const up = s.changePct >= 0;
+    const up = parseFloat(s.changePct) >= 0;
     const sign = up ? "+" : "";
     return `
       <li class="stock-item" data-code="${escapeHtml(s.code)}">
@@ -2951,7 +3026,8 @@ function renderStocks() {
     });
   });
 }
-function addStock(code) {
+
+async function addStock(code) {
   code = code.trim().toUpperCase();
   if (!/^\d{6}$/.test(code)) {
     showToast("请输入6位股票代码", "⚠️");
@@ -2962,20 +3038,39 @@ function addStock(code) {
     showToast("该股票已在自选中", "⚠️");
     return;
   }
-  const quote = mockQuote(code);
-  stocks.push(quote);
-  saveStocks(stocks);
-  renderStocks();
-  showToast(`已添加 ${quote.name}`, "✅");
+  
+  showToast("正在获取行情...", "⏳");
+  try {
+    const quotes = await fetchRealQuotes([code]);
+    if (quotes[code]) {
+      stocks.push(quotes[code]);
+      saveStocks(stocks);
+      renderStocks();
+      showToast(`已添加 ${quotes[code].name}`, "✅");
+    } else {
+      showToast("未找到该股票，请检查代码", "⚠️");
+    }
+  } catch (e) {
+    showToast("行情获取失败，请稍后重试", "❌");
+  }
 }
-function refreshStocks() {
+
+async function refreshStocks() {
   const stocks = getStocks();
   if (stocks.length === 0) return;
-  const updated = stocks.map(s => mockQuote(s.code));
-  saveStocks(updated);
-  renderStocks();
-  showToast("行情已刷新", "📈");
+  
+  try {
+    const codes = stocks.map(s => s.code);
+    const quotes = await fetchRealQuotes(codes);
+    const updated = stocks.map(s => quotes[s.code] || s);
+    saveStocks(updated);
+    renderStocks();
+    showToast("行情已刷新", "📈");
+  } catch (e) {
+    showToast("行情刷新失败，请稍后重试", "❌");
+  }
 }
+
 // 初始化股票事件
 function initStock() {
   const input = document.getElementById("stockInput");
@@ -2995,15 +3090,31 @@ function initStock() {
   if (refreshBtn) {
     refreshBtn.addEventListener("click", () => {
       refreshBtn.classList.add("spinning");
-      refreshStocks();
-      setTimeout(() => refreshBtn.classList.remove("spinning"), 500);
+      refreshStocks().finally(() => {
+        setTimeout(() => refreshBtn.classList.remove("spinning"), 500);
+      });
     });
   }
   // 默认添加几只示例股票（首次使用）
   if (getStocks().length === 0) {
-    saveStocks([mockQuote("600519"), mockQuote("300750"), mockQuote("002594")]);
+    // 先添加占位数据，然后异步刷新真实行情
+    const defaultCodes = ["600519", "300750", "002594"];
+    const placeholder = defaultCodes.map(code => ({
+      name: STOCK_NAMES[code] || code,
+      code: code,
+      price: "--",
+      changePct: "0.00",
+      change: "0.00"
+    }));
+    saveStocks(placeholder);
+    renderStocks();
+    // 异步获取真实行情
+    refreshStocks();
+  } else {
+    renderStocks();
+    // 页面加载后自动刷新一次行情
+    setTimeout(refreshStocks, 1000);
   }
-  renderStocks();
 }
 
 // ============================================
