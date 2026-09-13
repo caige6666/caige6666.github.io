@@ -4704,59 +4704,62 @@ function showUpdateModal(update) {
     style.textContent = `
       .update-modal-overlay {
         position: fixed; inset: 0; z-index: 10000;
-        background: rgba(0,0,0,0.5); backdrop-filter: blur(4px);
+        background: rgba(0,0,0,0.7); backdrop-filter: blur(8px);
         display: flex; align-items: center; justify-content: center;
         opacity: 0; visibility: hidden; transition: all 0.3s;
       }
       .update-modal-overlay.show { opacity: 1; visibility: visible; }
       .update-modal-box {
-        background: var(--card-bg); border-radius: 16px;
-        width: 90%; max-width: 480px; max-height: 80vh;
+        background: #ffffff; border-radius: 20px;
+        width: 92%; max-width: 560px; max-height: 85vh;
         display: flex; flex-direction: column;
-        box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        box-shadow: 0 25px 80px rgba(0,0,0,0.5);
         transform: scale(0.9) translateY(20px);
         transition: transform 0.3s;
         overflow: hidden;
+        border: 1px solid #e5e7eb;
       }
       .update-modal-overlay.show .update-modal-box { transform: scale(1) translateY(0); }
       .update-modal-header {
-        display: flex; align-items: center; gap: 12px;
-        padding: 20px 24px; border-bottom: 1px solid var(--border);
-        background: linear-gradient(135deg, var(--accent-bg), transparent);
+        display: flex; align-items: center; gap: 14px;
+        padding: 24px 28px; border-bottom: 1px solid #f0f0f0;
+        background: linear-gradient(135deg, #f0f9ff, #ffffff);
       }
-      .update-modal-icon { font-size: 36px; }
-      .update-modal-title { font-size: 18px; font-weight: 700; color: var(--text); }
-      .update-modal-version { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+      .update-modal-icon { font-size: 44px; }
+      .update-modal-title { font-size: 22px; font-weight: 700; color: #1a1a1a; }
+      .update-modal-version { font-size: 13px; color: #6b7280; margin-top: 4px; }
       .update-modal-close {
-        margin-left: auto; background: none; border: none;
-        font-size: 18px; color: var(--text-muted); cursor: pointer;
-        width: 32px; height: 32px; border-radius: 8px;
+        margin-left: auto; background: #f3f4f6; border: none;
+        font-size: 18px; color: #6b7280; cursor: pointer;
+        width: 36px; height: 36px; border-radius: 10px;
         display: flex; align-items: center; justify-content: center;
       }
-      .update-modal-close:hover { background: var(--accent-bg); color: var(--text); }
-      .update-modal-body { padding: 20px 24px; overflow-y: auto; flex: 1; }
+      .update-modal-close:hover { background: #e5e7eb; color: #1a1a1a; }
+      .update-modal-body { padding: 24px 28px; overflow-y: auto; flex: 1; }
       .update-modal-subtitle {
-        font-size: 13px; font-weight: 600; color: var(--accent);
-        margin-bottom: 12px;
+        font-size: 15px; font-weight: 700; color: #06b6d4;
+        margin-bottom: 16px;
       }
       .update-list { list-style: none; padding: 0; margin: 0; }
       .update-item {
-        font-size: 13.5px; color: var(--text-secondary);
-        line-height: 1.6; padding: 6px 0 6px 20px;
+        font-size: 15px; color: #374151;
+        line-height: 1.7; padding: 8px 0 8px 24px;
         position: relative;
       }
       .update-item::before {
         content: "✦"; position: absolute; left: 0;
-        color: var(--accent); font-size: 10px; top: 9px;
+        color: #06b6d4; font-size: 12px; top: 11px;
       }
       .update-modal-footer {
-        padding: 16px 24px; border-top: 1px solid var(--border);
-        display: flex; justify-content: flex-end;
+        padding: 20px 28px; border-top: 1px solid #f0f0f0;
+        display: flex; justify-content: center;
+        background: #fafafa;
       }
       .update-modal-btn {
-        padding: 10px 28px; border-radius: 10px;
-        background: var(--accent); color: #fff;
-        border: none; font-size: 14px; font-weight: 600;
+        padding: 12px 48px; border-radius: 12px;
+        background: linear-gradient(135deg, #06b6d4, #0891b2);
+        color: #fff;
+        border: none; font-size: 16px; font-weight: 700;
         cursor: pointer; transition: all 0.2s;
       }
       .update-modal-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(6,182,212,0.3); }
@@ -4812,56 +4815,58 @@ function showUpdateLog() {
     style.textContent = `
       .updatelog-modal-overlay {
         position: fixed; inset: 0; z-index: 10000;
-        background: rgba(0,0,0,0.5); backdrop-filter: blur(4px);
+        background: rgba(0,0,0,0.7); backdrop-filter: blur(8px);
         display: flex; align-items: center; justify-content: center;
         opacity: 0; visibility: hidden; transition: all 0.3s;
       }
       .updatelog-modal-overlay.show { opacity: 1; visibility: visible; }
       .updatelog-modal-box {
-        background: var(--card-bg); border-radius: 16px;
-        width: 90%; max-width: 560px; max-height: 80vh;
+        background: #ffffff; border-radius: 20px;
+        width: 92%; max-width: 600px; max-height: 85vh;
         display: flex; flex-direction: column;
-        box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        box-shadow: 0 25px 80px rgba(0,0,0,0.5);
         transform: scale(0.9) translateY(20px);
         transition: transform 0.3s;
         overflow: hidden;
+        border: 1px solid #e5e7eb;
       }
       .updatelog-modal-overlay.show .updatelog-modal-box { transform: scale(1) translateY(0); }
       .updatelog-modal-header {
         display: flex; align-items: center; justify-content: space-between;
-        padding: 18px 24px; border-bottom: 1px solid var(--border);
+        padding: 22px 28px; border-bottom: 1px solid #f0f0f0;
+        background: linear-gradient(135deg, #f0f9ff, #ffffff);
       }
-      .updatelog-modal-title { font-size: 17px; font-weight: 700; color: var(--text); }
+      .updatelog-modal-title { font-size: 20px; font-weight: 700; color: #1a1a1a; }
       .updatelog-modal-close {
-        background: none; border: none; font-size: 16px;
-        color: var(--text-muted); cursor: pointer;
-        width: 32px; height: 32px; border-radius: 8px;
+        background: #f3f4f6; border: none; font-size: 16px;
+        color: #6b7280; cursor: pointer;
+        width: 36px; height: 36px; border-radius: 10px;
         display: flex; align-items: center; justify-content: center;
       }
-      .updatelog-modal-close:hover { background: var(--accent-bg); color: var(--text); }
-      .updatelog-modal-body { padding: 16px 24px; overflow-y: auto; flex: 1; }
+      .updatelog-modal-close:hover { background: #e5e7eb; color: #1a1a1a; }
+      .updatelog-modal-body { padding: 20px 28px; overflow-y: auto; flex: 1; }
       .log-item {
-        padding: 16px; margin-bottom: 12px;
-        background: var(--bg); border-radius: 12px;
-        border-left: 3px solid var(--border);
+        padding: 18px; margin-bottom: 14px;
+        background: #f9fafb; border-radius: 14px;
+        border-left: 4px solid #d1d5db;
       }
-      .log-item.latest { border-left-color: var(--accent); background: var(--accent-bg); }
+      .log-item.latest { border-left-color: #06b6d4; background: #f0f9ff; }
       .log-item-header {
-        display: flex; align-items: center; gap: 10px; margin-bottom: 6px;
+        display: flex; align-items: center; gap: 10px; margin-bottom: 8px;
       }
       .log-version {
-        font-size: 14px; font-weight: 700; color: var(--accent);
+        font-size: 16px; font-weight: 700; color: #06b6d4;
       }
-      .log-date { font-size: 12px; color: var(--text-muted); }
+      .log-date { font-size: 13px; color: #6b7280; }
       .log-latest-tag {
-        font-size: 10px; padding: 2px 8px; border-radius: 6px;
-        background: var(--accent); color: #fff; font-weight: 600;
+        font-size: 11px; padding: 3px 10px; border-radius: 8px;
+        background: linear-gradient(135deg, #06b6d4, #0891b2); color: #fff; font-weight: 700;
       }
-      .log-item-title { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 8px; }
-      .log-item-list { margin: 0; padding-left: 18px; }
+      .log-item-title { font-size: 16px; font-weight: 700; color: #1a1a1a; margin-bottom: 10px; }
+      .log-item-list { margin: 0; padding-left: 20px; }
       .log-item-list li {
-        font-size: 12.5px; color: var(--text-secondary);
-        line-height: 1.7; padding: 2px 0;
+        font-size: 14px; color: #374151;
+        line-height: 1.8; padding: 3px 0;
       }
     `;
     document.head.appendChild(style);
