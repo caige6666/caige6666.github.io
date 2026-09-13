@@ -1875,8 +1875,18 @@ applyCategoryOrder();
 // ============================================
 // 更新日志
 // ============================================
-const CURRENT_VERSION = "2.2.0";
+const CURRENT_VERSION = "2.2.1";
 const UPDATE_LOG = [
+  {
+    version: "2.2.1",
+    date: "2026-09-14",
+    title: "股票行情API修复",
+    items: [
+      "股票行情改为腾讯财经API为主，新浪财经API备用",
+      "修复新浪API跨域限制导致行情获取失败的问题",
+      "多源自动切换，确保行情数据稳定可用"
+    ]
+  },
   {
     version: "2.2.0",
     date: "2026-09-14",
@@ -2905,71 +2915,122 @@ function getStockPrefix(code) {
   return "sh";
 }
 
-// 通过新浪财经API获取真实行情（JSONP方式）
-function fetchRealQuotes(codes) {
+// 通过script标签加载行情数据（通用）
+function loadStockScript(url, timeout = 8000) {
   return new Promise((resolve, reject) => {
-    const list = codes.map(code => getStockPrefix(code) + code).join(",");
     const script = document.createElement("script");
-    const callbackName = "stockCallback_" + Date.now();
-    
-    window[callbackName] = function() {
-      try {
-        const results = {};
-        codes.forEach(code => {
-          const prefix = getStockPrefix(code);
-          const varName = "hq_str_" + prefix + code;
-          const data = window[varName];
-          if (data) {
-            const fields = data.split(",");
-            if (fields.length > 3) {
-              const name = fields[0] || STOCK_NAMES[code] || code;
-              const open = parseFloat(fields[1]) || 0;
-              const prevClose = parseFloat(fields[2]) || 0;
-              const price = parseFloat(fields[3]) || 0;
-              const high = parseFloat(fields[4]) || 0;
-              const low = parseFloat(fields[5]) || 0;
-              const change = price - prevClose;
-              const changePct = prevClose > 0 ? (change / prevClose * 100) : 0;
-              results[code] = {
-                name: name,
-                code: code,
-                price: price.toFixed(2),
-                changePct: changePct.toFixed(2),
-                change: change.toFixed(2),
-                high: high.toFixed(2),
-                low: low.toFixed(2),
-                open: open.toFixed(2),
-                prevClose: prevClose.toFixed(2)
-              };
-            }
-          }
-        });
-        resolve(results);
-      } catch (e) {
-        reject(e);
-      } finally {
-        delete window[callbackName];
-        script.remove();
-      }
-    };
-    
-    script.src = "https://hq.sinajs.cn/list=" + list + "&rn=" + Date.now();
-    script.onerror = () => {
-      delete window[callbackName];
+    let done = false;
+    const cleanup = () => {
+      done = true;
       script.remove();
-      reject(new Error("行情API请求失败"));
     };
+    script.onload = () => { cleanup(); resolve(); };
+    script.onerror = () => { cleanup(); reject(new Error("script load error")); };
+    script.src = url;
     document.head.appendChild(script);
-    
-    // 超时处理
     setTimeout(() => {
-      if (window[callbackName]) {
-        delete window[callbackName];
-        script.remove();
-        reject(new Error("行情请求超时"));
-      }
-    }, 8000);
+      if (!done) { cleanup(); reject(new Error("timeout")); }
+    }, timeout);
   });
+}
+
+// 腾讯财经API解析
+function parseTencentQuotes(codes) {
+  const results = {};
+  codes.forEach(code => {
+    const prefix = getStockPrefix(code);
+    const varName = "v_" + prefix + code;
+    const data = window[varName];
+    if (data && typeof data === "string") {
+      const fields = data.split("~");
+      if (fields.length > 5) {
+        const name = fields[1] || STOCK_NAMES[code] || code;
+        const price = parseFloat(fields[3]) || 0;
+        const prevClose = parseFloat(fields[4]) || 0;
+        const open = parseFloat(fields[5]) || 0;
+        const high = parseFloat(fields[33]) || 0;
+        const low = parseFloat(fields[34]) || 0;
+        const change = price - prevClose;
+        const changePct = prevClose > 0 ? (change / prevClose * 100) : 0;
+        if (price > 0) {
+          results[code] = {
+            name: name,
+            code: code,
+            price: price.toFixed(2),
+            changePct: changePct.toFixed(2),
+            change: change.toFixed(2),
+            high: high.toFixed(2),
+            low: low.toFixed(2),
+            open: open.toFixed(2),
+            prevClose: prevClose.toFixed(2)
+          };
+        }
+      }
+    }
+  });
+  return results;
+}
+
+// 新浪财经API解析
+function parseSinaQuotes(codes) {
+  const results = {};
+  codes.forEach(code => {
+    const prefix = getStockPrefix(code);
+    const varName = "hq_str_" + prefix + code;
+    const data = window[varName];
+    if (data && typeof data === "string") {
+      const fields = data.split(",");
+      if (fields.length > 3) {
+        const name = fields[0] || STOCK_NAMES[code] || code;
+        const open = parseFloat(fields[1]) || 0;
+        const prevClose = parseFloat(fields[2]) || 0;
+        const price = parseFloat(fields[3]) || 0;
+        const high = parseFloat(fields[4]) || 0;
+        const low = parseFloat(fields[5]) || 0;
+        const change = price - prevClose;
+        const changePct = prevClose > 0 ? (change / prevClose * 100) : 0;
+        if (price > 0) {
+          results[code] = {
+            name: name,
+            code: code,
+            price: price.toFixed(2),
+            changePct: changePct.toFixed(2),
+            change: change.toFixed(2),
+            high: high.toFixed(2),
+            low: low.toFixed(2),
+            open: open.toFixed(2),
+            prevClose: prevClose.toFixed(2)
+          };
+        }
+      }
+    }
+  });
+  return results;
+}
+
+// 获取真实行情（多源备用：腾讯→新浪）
+async function fetchRealQuotes(codes) {
+  const list = codes.map(code => getStockPrefix(code) + code).join(",");
+  
+  // 方案1：腾讯财经API
+  try {
+    await loadStockScript("https://qt.gtimg.cn/q=" + list + "&_=" + Date.now());
+    const results = parseTencentQuotes(codes);
+    if (Object.keys(results).length > 0) return results;
+  } catch (e) {
+    console.log("腾讯行情API失败，尝试新浪...");
+  }
+  
+  // 方案2：新浪财经API
+  try {
+    await loadStockScript("https://hq.sinajs.cn/list=" + list + "&rn=" + Date.now());
+    const results = parseSinaQuotes(codes);
+    if (Object.keys(results).length > 0) return results;
+  } catch (e) {
+    console.log("新浪行情API失败");
+  }
+  
+  throw new Error("所有行情源均失败");
 }
 
 function getStocks() {
