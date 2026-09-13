@@ -517,52 +517,32 @@ button { font-family: inherit; }
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
 
-/* 股票监控 */
-.stock-add {
-  display: flex; gap: 6px; padding: 10px 12px;
+/* 实时汇率 */
+.rate-list { padding: 8px 0; }
+.rate-loading, .rate-error {
+  padding: 16px; text-align: center; color: var(--text-muted); font-size: 12px;
+}
+.rate-error { color: #ef4444; }
+.rate-item {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 9px 12px; transition: background 0.15s;
   border-bottom: 1px solid var(--border);
 }
-.stock-add input {
-  flex: 1; min-width: 0; padding: 6px 10px;
-  background: var(--bg-secondary); border: 1px solid var(--border);
-  border-radius: 6px; color: var(--text); font-size: 12px;
-  outline: none; transition: border-color 0.2s;
-}
-.stock-add input:focus { border-color: var(--accent); }
-.stock-add button {
-  padding: 6px 12px; background: var(--accent); color: #fff;
-  border: none; border-radius: 6px; font-size: 12px;
-  cursor: pointer; transition: opacity 0.2s;
-}
-.stock-add button:hover { opacity: 0.85; }
-.stock-list { list-style: none; padding: 4px 0; }
-.stock-item {
-  display: flex; align-items: center; gap: 8px;
-  padding: 8px 12px; cursor: pointer; transition: background 0.15s;
-}
-.stock-item:hover { background: var(--accent-bg); }
-.stock-info { flex: 1; min-width: 0; }
-.stock-name {
-  font-size: 13px; font-weight: 600; color: var(--text);
-  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-}
-.stock-code { font-size: 10px; color: var(--text-muted); }
-.stock-price { text-align: right; flex-shrink: 0; }
-.stock-price-val { font-size: 13px; font-weight: 700; }
-.stock-price-val.up { color: #ef4444; }
-.stock-price-val.down { color: #22c55e; }
-.stock-change { font-size: 10px; }
-.stock-change.up { color: #ef4444; }
-.stock-change.down { color: #22c55e; }
-.stock-del {
-  width: 20px; height: 20px; border-radius: 4px;
-  display: flex; align-items: center; justify-content: center;
-  color: var(--text-muted); font-size: 14px; cursor: pointer;
-  flex-shrink: 0; transition: all 0.15s;
-}
-.stock-del:hover { background: var(--danger-bg); color: var(--danger); }
-.stock-empty {
-  padding: 16px; text-align: center; color: var(--text-muted); font-size: 12px;
+.rate-item:last-child { border-bottom: none; }
+.rate-item:hover { background: var(--accent-bg); }
+.rate-left { display: flex; align-items: center; gap: 8px; }
+.rate-flag { font-size: 18px; }
+.rate-info { display: flex; flex-direction: column; }
+.rate-name { font-size: 13px; font-weight: 600; color: var(--text); }
+.rate-code { font-size: 10px; color: var(--text-muted); }
+.rate-right { text-align: right; }
+.rate-value { font-size: 14px; font-weight: 700; color: var(--text); }
+.rate-change { font-size: 10px; margin-top: 1px; }
+.rate-change.up { color: #ef4444; }
+.rate-change.down { color: #22c55e; }
+.rate-update {
+  padding: 6px 12px; font-size: 10px; color: var(--text-muted);
+  text-align: center; border-top: 1px solid var(--border);
 }
 
 /* 励志文学 */
@@ -1711,14 +1691,12 @@ _hmt.push(['_trackPageview']);
 
     <div class="hot-panel">
       <div class="hot-panel-header">
-        <span class="hot-panel-title">📊 股票监控</span>
-        <button class="hot-panel-refresh" id="stockRefresh" title="刷新行情">🔄</button>
+        <span class="hot-panel-title">💱 实时汇率</span>
+        <button class="hot-panel-refresh" id="rateRefresh" title="刷新汇率">🔄</button>
       </div>
-      <div class="stock-add">
-        <input type="text" id="stockInput" placeholder="输入代码如 600519" maxlength="8">
-        <button id="stockAddBtn">添加</button>
+      <div class="rate-list" id="rateList">
+        <div class="rate-loading">正在获取汇率...</div>
       </div>
-      <div class="stock-list" id="stockList"></div>
     </div>
     <div class="hot-panel">
       <div class="hot-panel-header">
@@ -1875,8 +1853,19 @@ applyCategoryOrder();
 // ============================================
 // 更新日志
 // ============================================
-const CURRENT_VERSION = "2.2.1";
+const CURRENT_VERSION = "2.3.0";
 const UPDATE_LOG = [
+  {
+    version: "2.3.0",
+    date: "2026-09-14",
+    title: "股票监控替换为实时汇率",
+    items: [
+      "股票监控因API防盗链限制无法使用，替换为实时汇率监控",
+      "支持美元、欧元、日元、港币、英镑、澳元6种主要货币",
+      "显示汇率涨跌幅，数据缓存本地，失败自动使用缓存",
+      "使用exchangerate-api免费API，稳定可靠支持CORS"
+    ]
+  },
   {
     version: "2.2.1",
     date: "2026-09-14",
@@ -2889,293 +2878,127 @@ function renderInfoList(type) {
 }
 
 // ============================================
-// 股票监控（真实行情 - 新浪财经API）
+// 实时汇率监控
 // ============================================
-const STOCK_KEY = "nav_stocks";
-// 内置股票名称映射（代码→名称）
-const STOCK_NAMES = {
-  "600519": "贵州茅台", "000001": "平安银行", "000002": "万科A",
-  "601318": "中国平安", "600036": "招商银行", "000858": "五粮液",
-  "601398": "工商银行", "600900": "长江电力", "601899": "紫金矿业",
-  "002594": "比亚迪", "300750": "宁德时代", "600030": "中信证券",
-  "601012": "隆基绿能", "000333": "美的集团", "600276": "恒瑞医药",
-  "601888": "中国中免", "002415": "海康威视", "600887": "伊利股份",
-  "000568": "泸州老窖", "603288": "海天味业", "601166": "兴业银行",
-  "600000": "浦发银行", "601628": "中国人寿", "601668": "中国建筑",
-  "600585": "海螺水泥", "000651": "格力电器", "002475": "立讯精密",
-  "300059": "东方财富", "600031": "三一重工", "601088": "中国神华",
-  "688836": "宇树科技-W"
-};
+const RATE_CURRENCIES = [
+  { code: "USD", name: "美元", flag: "🇺🇸" },
+  { code: "EUR", name: "欧元", flag: "🇪🇺" },
+  { code: "JPY", name: "日元", flag: "🇯🇵" },
+  { code: "HKD", name: "港币", flag: "🇭🇰" },
+  { code: "GBP", name: "英镑", flag: "🇬🇧" },
+  { code: "AUD", name: "澳元", flag: "🇦🇺" }
+];
 
-// 获取股票代码前缀（交易所）
-function getStockPrefix(code) {
-  if (code.startsWith("6") || code.startsWith("9")) return "sh";
-  if (code.startsWith("0") || code.startsWith("3")) return "sz";
-  if (code.startsWith("4") || code.startsWith("8")) return "bj";
-  return "sh";
-}
+let rateCache = JSON.parse(localStorage.getItem("nav_rates") || "{}");
 
-// 通过script标签加载行情数据（通用）
-function loadStockScript(url, timeout = 8000) {
-  return new Promise((resolve, reject) => {
-    const script = document.createElement("script");
-    let done = false;
-    const cleanup = () => {
-      done = true;
-      script.remove();
-    };
-    script.onload = () => { cleanup(); resolve(); };
-    script.onerror = () => { cleanup(); reject(new Error("script load error")); };
-    script.src = url;
-    document.head.appendChild(script);
-    setTimeout(() => {
-      if (!done) { cleanup(); reject(new Error("timeout")); }
-    }, timeout);
-  });
-}
-
-// 腾讯财经API解析
-function parseTencentQuotes(codes) {
-  const results = {};
-  codes.forEach(code => {
-    const prefix = getStockPrefix(code);
-    const varName = "v_" + prefix + code;
-    const data = window[varName];
-    if (data && typeof data === "string") {
-      const fields = data.split("~");
-      if (fields.length > 5) {
-        const name = fields[1] || STOCK_NAMES[code] || code;
-        const price = parseFloat(fields[3]) || 0;
-        const prevClose = parseFloat(fields[4]) || 0;
-        const open = parseFloat(fields[5]) || 0;
-        const high = parseFloat(fields[33]) || 0;
-        const low = parseFloat(fields[34]) || 0;
-        const change = price - prevClose;
-        const changePct = prevClose > 0 ? (change / prevClose * 100) : 0;
-        if (price > 0) {
-          results[code] = {
-            name: name,
-            code: code,
-            price: price.toFixed(2),
-            changePct: changePct.toFixed(2),
-            change: change.toFixed(2),
-            high: high.toFixed(2),
-            low: low.toFixed(2),
-            open: open.toFixed(2),
-            prevClose: prevClose.toFixed(2)
-          };
-        }
+async function fetchRates() {
+  try {
+    const res = await fetch("https://api.exchangerate-api.com/v4/latest/CNY");
+    if (!res.ok) throw new Error("API请求失败");
+    const data = await res.json();
+    const rates = {};
+    RATE_CURRENCIES.forEach(c => {
+      // 1单位外币 = ?人民币
+      const rate = 1 / data.rates[c.code];
+      rates[c.code] = rate.toFixed(4);
+    });
+    rates._date = data.date;
+    rates._time = new Date().toLocaleTimeString("zh-CN", {hour: "2-digit", minute: "2-digit"});
+    
+    // 计算涨跌幅
+    const prev = rateCache;
+    RATE_CURRENCIES.forEach(c => {
+      if (prev[c.code]) {
+        const change = ((parseFloat(rates[c.code]) - parseFloat(prev[c.code])) / parseFloat(prev[c.code]) * 100);
+        rates[c.code + "_change"] = change.toFixed(3);
+      } else {
+        rates[c.code + "_change"] = "0.000";
       }
-    }
-  });
-  return results;
-}
-
-// 新浪财经API解析
-function parseSinaQuotes(codes) {
-  const results = {};
-  codes.forEach(code => {
-    const prefix = getStockPrefix(code);
-    const varName = "hq_str_" + prefix + code;
-    const data = window[varName];
-    if (data && typeof data === "string") {
-      const fields = data.split(",");
-      if (fields.length > 3) {
-        const name = fields[0] || STOCK_NAMES[code] || code;
-        const open = parseFloat(fields[1]) || 0;
-        const prevClose = parseFloat(fields[2]) || 0;
-        const price = parseFloat(fields[3]) || 0;
-        const high = parseFloat(fields[4]) || 0;
-        const low = parseFloat(fields[5]) || 0;
-        const change = price - prevClose;
-        const changePct = prevClose > 0 ? (change / prevClose * 100) : 0;
-        if (price > 0) {
-          results[code] = {
-            name: name,
-            code: code,
-            price: price.toFixed(2),
-            changePct: changePct.toFixed(2),
-            change: change.toFixed(2),
-            high: high.toFixed(2),
-            low: low.toFixed(2),
-            open: open.toFixed(2),
-            prevClose: prevClose.toFixed(2)
-          };
-        }
-      }
-    }
-  });
-  return results;
-}
-
-// 获取真实行情（多源备用：腾讯→新浪）
-async function fetchRealQuotes(codes) {
-  const list = codes.map(code => getStockPrefix(code) + code).join(",");
-  
-  // 方案1：腾讯财经API
-  try {
-    await loadStockScript("https://qt.gtimg.cn/q=" + list + "&_=" + Date.now());
-    const results = parseTencentQuotes(codes);
-    if (Object.keys(results).length > 0) return results;
+    });
+    
+    rateCache = rates;
+    localStorage.setItem("nav_rates", JSON.stringify(rates));
+    return rates;
   } catch (e) {
-    console.log("腾讯行情API失败，尝试新浪...");
+    console.error("汇率获取失败:", e);
+    throw e;
   }
-  
-  // 方案2：新浪财经API
-  try {
-    await loadStockScript("https://hq.sinajs.cn/list=" + list + "&rn=" + Date.now());
-    const results = parseSinaQuotes(codes);
-    if (Object.keys(results).length > 0) return results;
-  } catch (e) {
-    console.log("新浪行情API失败");
-  }
-  
-  throw new Error("所有行情源均失败");
 }
 
-function getStocks() {
-  try {
-    return JSON.parse(localStorage.getItem(STOCK_KEY)) || [];
-  } catch (e) { return []; }
-}
-function saveStocks(list) {
-  localStorage.setItem(STOCK_KEY, JSON.stringify(list));
-}
-
-function renderStocks() {
-  const listEl = document.getElementById("stockList");
+function renderRates(rates) {
+  const listEl = document.getElementById("rateList");
   if (!listEl) return;
-  const stocks = getStocks();
-  if (stocks.length === 0) {
-    listEl.innerHTML = '<div class="stock-empty">添加自选股开始监控</div>';
+  
+  if (!rates) {
+    listEl.innerHTML = '<div class="rate-loading">正在获取汇率...</div>';
     return;
   }
-  listEl.innerHTML = stocks.map(s => {
-    const up = parseFloat(s.changePct) >= 0;
+  
+  const html = RATE_CURRENCIES.map(c => {
+    const rate = rates[c.code] || "--";
+    const change = rates[c.code + "_change"] || "0.000";
+    const changeVal = parseFloat(change);
+    const up = changeVal >= 0;
     const sign = up ? "+" : "";
     return `
-      <li class="stock-item" data-code="${escapeHtml(s.code)}">
-        <div class="stock-info">
-          <div class="stock-name">${escapeHtml(s.name)}</div>
-          <div class="stock-code">${escapeHtml(s.code)}</div>
+      <div class="rate-item">
+        <div class="rate-left">
+          <span class="rate-flag">${c.flag}</span>
+          <div class="rate-info">
+            <span class="rate-name">${c.name}</span>
+            <span class="rate-code">${c.code}/CNY</span>
+          </div>
         </div>
-        <div class="stock-price">
-          <div class="stock-price-val ${up ? 'up' : 'down'}">${s.price}</div>
-          <div class="stock-change ${up ? 'up' : 'down'}">${sign}${s.changePct}%</div>
+        <div class="rate-right">
+          <div class="rate-value">${rate}</div>
+          <div class="rate-change ${up ? 'up' : 'down'}">${sign}${change}%</div>
         </div>
-        <div class="stock-del" data-code="${escapeHtml(s.code)}" title="删除">×</div>
-      </li>`;
+      </div>
+    `;
   }).join("");
-
-  // 点击股票跳转行情页
-  listEl.querySelectorAll(".stock-item").forEach(item => {
-    item.addEventListener("click", (e) => {
-      if (e.target.classList.contains("stock-del")) return;
-      const code = item.dataset.code;
-      window.open("https://quote.eastmoney.com/" + code + ".html", "_blank");
-    });
-  });
-  // 删除按钮
-  listEl.querySelectorAll(".stock-del").forEach(btn => {
-    btn.addEventListener("click", (e) => {
-      e.stopPropagation();
-      const code = btn.dataset.code;
-      const stocks = getStocks().filter(s => s.code !== code);
-      saveStocks(stocks);
-      renderStocks();
-      showToast("已删除自选股", "🗑️");
-    });
-  });
+  
+  const updateTime = rates._time ? `更新于 ${rates._time}` : "";
+  listEl.innerHTML = html + `<div class="rate-update">${updateTime} · 数据仅供参考</div>`;
 }
 
-async function addStock(code) {
-  code = code.trim().toUpperCase();
-  if (!/^\d{6}$/.test(code)) {
-    showToast("请输入6位股票代码", "⚠️");
-    return;
-  }
-  const stocks = getStocks();
-  if (stocks.find(s => s.code === code)) {
-    showToast("该股票已在自选中", "⚠️");
-    return;
-  }
+async function refreshRates() {
+  const listEl = document.getElementById("rateList");
+  if (listEl) listEl.innerHTML = '<div class="rate-loading">正在获取汇率...</div>';
   
-  showToast("正在获取行情...", "⏳");
   try {
-    const quotes = await fetchRealQuotes([code]);
-    if (quotes[code]) {
-      stocks.push(quotes[code]);
-      saveStocks(stocks);
-      renderStocks();
-      showToast(`已添加 ${quotes[code].name}`, "✅");
+    const rates = await fetchRates();
+    renderRates(rates);
+    showToast("汇率已刷新", "💱");
+  } catch (e) {
+    // 如果有缓存，显示缓存数据
+    if (rateCache && rateCache.USD) {
+      renderRates(rateCache);
+      showToast("使用缓存汇率数据", "⚠️");
     } else {
-      showToast("未找到该股票，请检查代码", "⚠️");
+      if (listEl) listEl.innerHTML = '<div class="rate-error">汇率获取失败，请稍后重试</div>';
+      showToast("汇率获取失败", "❌");
     }
-  } catch (e) {
-    showToast("行情获取失败，请稍后重试", "❌");
   }
 }
 
-async function refreshStocks() {
-  const stocks = getStocks();
-  if (stocks.length === 0) return;
-  
-  try {
-    const codes = stocks.map(s => s.code);
-    const quotes = await fetchRealQuotes(codes);
-    const updated = stocks.map(s => quotes[s.code] || s);
-    saveStocks(updated);
-    renderStocks();
-    showToast("行情已刷新", "📈");
-  } catch (e) {
-    showToast("行情刷新失败，请稍后重试", "❌");
-  }
-}
-
-// 初始化股票事件
-function initStock() {
-  const input = document.getElementById("stockInput");
-  const addBtn = document.getElementById("stockAddBtn");
-  const refreshBtn = document.getElementById("stockRefresh");
-  if (!input || !addBtn) return;
-  addBtn.addEventListener("click", () => {
-    addStock(input.value);
-    input.value = "";
-  });
-  input.addEventListener("keydown", (e) => {
-    if (e.key === "Enter") {
-      addStock(input.value);
-      input.value = "";
-    }
-  });
+function initRate() {
+  const refreshBtn = document.getElementById("rateRefresh");
   if (refreshBtn) {
     refreshBtn.addEventListener("click", () => {
       refreshBtn.classList.add("spinning");
-      refreshStocks().finally(() => {
+      refreshRates().finally(() => {
         setTimeout(() => refreshBtn.classList.remove("spinning"), 500);
       });
     });
   }
-  // 默认添加几只示例股票（首次使用）
-  if (getStocks().length === 0) {
-    // 先添加占位数据，然后异步刷新真实行情
-    const defaultCodes = ["600519", "300750", "002594"];
-    const placeholder = defaultCodes.map(code => ({
-      name: STOCK_NAMES[code] || code,
-      code: code,
-      price: "--",
-      changePct: "0.00",
-      change: "0.00"
-    }));
-    saveStocks(placeholder);
-    renderStocks();
-    // 异步获取真实行情
-    refreshStocks();
-  } else {
-    renderStocks();
-    // 页面加载后自动刷新一次行情
-    setTimeout(refreshStocks, 1000);
+  
+  // 先显示缓存数据
+  if (rateCache && rateCache.USD) {
+    renderRates(rateCache);
   }
+  
+  // 页面加载后自动刷新
+  setTimeout(refreshRates, 500);
 }
 
 // ============================================
@@ -3393,7 +3216,7 @@ setTimeout(() => {
   renderInfoList("policy");
   renderInfoList("finance");
   renderInfoList("law");
-  initStock();
+  initRate();
   initQuote();
   initLazyLoad();
   initClickStats();
