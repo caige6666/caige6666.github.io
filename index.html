@@ -1853,8 +1853,59 @@ applyCategoryOrder();
 // ============================================
 // 更新日志
 // ============================================
-const CURRENT_VERSION = "2.3.1";
+const CURRENT_VERSION = "2.5.2";
 const UPDATE_LOG = [
+  {
+    version: "2.5.2",
+    date: "2026-09-16",
+    title: "修复网站卡片排序不保存的问题",
+    items: [
+      "修复网站卡片拖拽排序后刷新页面就还原的问题",
+      "现在每个分类下的网站顺序都会自动保存到本地",
+      "下次打开网页时自动恢复你调整过的顺序",
+      "每个用户的排序独立保存，互不影响",
+      "拖拽调整后会提示'顺序已保存，下次打开自动恢复'"
+    ]
+  },
+  {
+    version: "2.5.1",
+    date: "2026-09-16",
+    title: "游戏下载站大扩充",
+    items: [
+      "新增PlayZip、FitGirl Repacks、DODI Repacks、SteamRIP等11个游戏下载站",
+      "游戏资源分类从23个扩充到34个",
+      "新增全球最知名的高压Repack站FitGirl，体积最小本体+全DLC",
+      "新增DODI、ElAmigos、SteamRIP等国外知名游戏下载站",
+      "新增咸鱼单机、Byrut、3A游戏库、gdgame等国内游戏下载站",
+      "新增CS.RIN.ru全球最权威游戏破解论坛"
+    ]
+  },
+  {
+    version: "2.5.0",
+    date: "2026-09-16",
+    title: "游戏资源区大扩充",
+    items: [
+      "游戏资源分类从8个扩充到23个，覆盖正版平台/资讯攻略/下载/修改器/MOD/小游戏/怀旧模拟器",
+      "新增Steam、Epic Games（每周免费送游戏）、GOG、Humble Bundle等正版游戏平台",
+      "新增游民星空、游侠网、NGA、游研社等游戏资讯攻略社区",
+      "新增WeMod、Nexus Mods等修改器和MOD平台",
+      "新增4399、7k7k、Poki等在线小游戏平台",
+      "新增小霸王游戏机、Java游戏小站等怀旧模拟器游戏平台"
+    ]
+  },
+  {
+    version: "2.4.0",
+    date: "2026-09-16",
+    title: "新增免费学习专区",
+    items: [
+      "新增「免费学习」分类，精选20个全球最好的免费学习资源网站",
+      "包含国家高等教育智慧平台、国家中小学智慧平台等官方免费平台",
+      "新增freeCodeCamp、菜鸟教程、W3School等免费编程学习资源",
+      "新增多邻国、BBC Learning English等免费语言学习资源",
+      "新增MIT公开课、耶鲁公开课、DOAJ、PubMed等免费学术资源",
+      "新增Google Digital Garage、Microsoft Learn等免费职业技能课程"
+    ]
+  },
   {
     version: "2.3.1",
     date: "2026-09-14",
@@ -2405,7 +2456,8 @@ function renderSites() {
       html += renderSection({ name: "最近访问", icon: "🕐" }, recentSites);
     }
     catsToShow.forEach(cat => {
-      const catSites = sites.filter(s => s.category === cat.name);
+      let catSites = sites.filter(s => s.category === cat.name);
+      catSites = applySiteOrder(cat.name, catSites);
       if (catSites.length > 0) html += renderSection(cat, catSites);
     });
     main.innerHTML = html;
@@ -2417,7 +2469,11 @@ function renderSites() {
       main.innerHTML = `<div class="empty-state"><div class="icon">🔍</div><div class="text">${msg}</div><div class="sub">${keyword ? "换个关键词试试吧" : "点击卡片右上角星星收藏网站"}</div></div>`;
     } else {
       const cat = categories.find(c => c.name === currentCategory) || { name: keyword ? "搜索结果" : "全部", icon: keyword ? "🔍" : "📋" };
-      main.innerHTML = renderSection(cat, filtered);
+      let orderedFiltered = filtered;
+      if (!keyword && currentCategory !== "我的收藏" && currentCategory !== "最近访问") {
+        orderedFiltered = applySiteOrder(currentCategory, filtered);
+      }
+      main.innerHTML = renderSection(cat, orderedFiltered);
     }
   }
 
@@ -3343,6 +3399,32 @@ function sortByClicks(sites) {
 // 拖拽排序
 // ============================================
 let draggedCard = null;
+const SITE_ORDER_KEY = "nav_site_order";
+
+function getSiteOrder() {
+  try { return JSON.parse(localStorage.getItem(SITE_ORDER_KEY)) || {}; }
+  catch (e) { return {}; }
+}
+
+function saveSiteOrder(category, names) {
+  const all = getSiteOrder();
+  all[category] = names;
+  localStorage.setItem(SITE_ORDER_KEY, JSON.stringify(all));
+}
+
+function applySiteOrder(category, siteList) {
+  const order = getSiteOrder()[category];
+  if (!order || !Array.isArray(order)) return siteList;
+  return [...siteList].sort((a, b) => {
+    const ia = order.indexOf(a.name);
+    const ib = order.indexOf(b.name);
+    if (ia === -1 && ib === -1) return 0;
+    if (ia === -1) return 1;
+    if (ib === -1) return -1;
+    return ia - ib;
+  });
+}
+
 function initDragSort() {
   document.addEventListener("dragstart", (e) => {
     const card = e.target.closest(".card");
@@ -3378,6 +3460,17 @@ function initDragSort() {
       target.after(draggedCard);
     } else {
       target.before(draggedCard);
+    }
+    // 保存当前分类的网站顺序
+    const section = draggedCard.closest(".section");
+    if (section) {
+      const catName = section.querySelector(".section-title")?.textContent?.trim();
+      const orderedNames = [...section.querySelectorAll(".card")].map(c => c.dataset.name);
+      if (catName && orderedNames.length > 0) {
+        saveSiteOrder(catName, orderedNames);
+        showToast("顺序已保存，下次打开自动恢复", "✅");
+        return;
+      }
     }
     showToast("顺序已调整", "✅");
   });
